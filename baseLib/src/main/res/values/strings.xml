@@ -1,0 +1,7 @@
+<resources>
+    <string name="enter_account">输入账号</string>
+    <string name="enter_pwd">输入密码</string>
+    <string name="enter_bnt_login">登录</string>
+    <string name="account_number_or_password_null">账号或密码不允许为空</string>
+    <string name="login_msg">正在登录，请稍等...</string>
+</resources>
