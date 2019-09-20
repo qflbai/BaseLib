@@ -64,14 +64,11 @@ public class BaseRepository implements IDataRepository {
 
     /**
      * 传入Class 通过{@link Room#databaseBuilder},{@link RoomDatabase.Builder<T>#build()}获得对应的Class
-     *
-     * @param database
      * @param <T>
      * @return {@link RoomDatabase.Builder<T>#build()}
      */
     @Override
-    public <T extends RoomDatabase> T getRoomDatabase(@NonNull Class<T> database, @Nullable String dbName) {
-        RoomDatabase.Builder<T> builder = Room.databaseBuilder(getContext().getApplicationContext(), database, TextUtils.isEmpty(dbName) ? ConstantValues.DEFAULT_DATABASE_NAME : dbName);
-        return builder.build();
+    public <T extends RoomDatabase> T getRoomDatabase(@NonNull T roomDatabase) {
+        return roomDatabase;
     }
 }

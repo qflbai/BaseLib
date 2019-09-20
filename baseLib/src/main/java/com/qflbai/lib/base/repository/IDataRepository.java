@@ -34,5 +34,5 @@ public interface IDataRepository {
      * @param <T>
      * @return {@link RoomDatabase.Builder<T>#build()}
      */
-    <T extends RoomDatabase> T getRoomDatabase(@NonNull Class<T> database, @Nullable String dbName);
+    <T extends RoomDatabase> T getRoomDatabase(T roomDatabase);
 }

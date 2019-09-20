@@ -43,6 +43,7 @@ public abstract class AbsLifecycleFragment<T extends BaseViewModel> extends Base
     public void initView(Bundle state) {
         mViewModel = VMProviders(this,  TUtil.getInstance(this, 0));
         if (null != mViewModel) {
+            getLifecycle().addObserver(mViewModel);
             dataObserver();
         }
     }
@@ -104,7 +105,8 @@ public abstract class AbsLifecycleFragment<T extends BaseViewModel> extends Base
     public void onDestroyView() {
         super.onDestroyView();
         if (mViewModel != null) {
-            mViewModel.mModel.unDisposable();
+            getLifecycle().removeObserver(mViewModel);
+            mViewModel = null;
         }
     }
 }

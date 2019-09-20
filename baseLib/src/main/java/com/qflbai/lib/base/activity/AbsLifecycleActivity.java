@@ -26,15 +26,15 @@ import dagger.android.HasAndroidInjector;
  * @Date: 2018/11/2.
  * @Description:
  */
-public class AbsLifecycleActivity<T extends BaseViewModel> extends BaseActivity implements   HasAndroidInjector {
+public class AbsLifecycleActivity<T extends BaseViewModel> extends BaseActivity implements HasAndroidInjector {
 
     @Inject
     DispatchingAndroidInjector<Object> mAndroidInjector;
 
     @Inject
     ViewModelProvider.Factory mViewModelFactory;
-    protected T mViewModel;
 
+    protected T mViewModel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,13 +44,14 @@ public class AbsLifecycleActivity<T extends BaseViewModel> extends BaseActivity 
 
     @Override
     public void initViews(Bundle savedInstanceState) {
-        mViewModel = VMProviders(this,mViewModelFactory,  TUtil.getInstance(this, 0));
+        mViewModel = VMProviders(this, mViewModelFactory, TUtil.getInstance(this, 0));
+        getLifecycle().addObserver(mViewModel);
         dataObserver();
     }
 
 
-    protected <T extends BaseViewModel> T VMProviders(AppCompatActivity appCompatActivity, ViewModelProvider.Factory factory,@NonNull Class modelClass) {
-        return (T) ViewModelProviders.of(appCompatActivity,factory).get(modelClass);
+    protected <T extends BaseViewModel> T VMProviders(AppCompatActivity appCompatActivity, ViewModelProvider.Factory factory, @NonNull Class modelClass) {
+        return (T) ViewModelProviders.of(appCompatActivity, factory).get(modelClass);
     }
 
     protected void dataObserver() {
@@ -66,7 +67,7 @@ public class AbsLifecycleActivity<T extends BaseViewModel> extends BaseActivity 
     protected Observer<ViewState> viewObserver = new Observer<ViewState>() {
         @Override
         public void onChanged(@Nullable ViewState viewState) {
-            if(viewState==null){
+            if (viewState == null) {
                 return;
             }
             ViewState.State state = viewState.getState();
@@ -113,7 +114,8 @@ public class AbsLifecycleActivity<T extends BaseViewModel> extends BaseActivity 
     protected void onDestroy() {
         super.onDestroy();
         if (mViewModel != null) {
-            mViewModel.mModel.unDisposable();
+            getLifecycle().removeObserver(mViewModel);
+            mViewModel = null;
         }
     }
 }

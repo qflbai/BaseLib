@@ -21,7 +21,6 @@ public class ApplicationDelegate implements IAppComponent,ApplicationLifecycle{
     private AppComponent mAppComponent;
 
 
-
     public ApplicationDelegate(@NonNull Application application){
         this.mApplication = application;
     }

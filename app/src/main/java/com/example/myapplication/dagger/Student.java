@@ -1,5 +1,7 @@
 package com.example.myapplication.dagger;
 
+import android.app.Application;
+
 import javax.inject.Inject;
 
 /**
@@ -11,9 +13,15 @@ import javax.inject.Inject;
 public class Student {
 
     private String name;
-    @Inject
-    public Student(){
+    private Application mApplication;
 
+    public Student(Li li){
+        name = li.getName();
+    }
+    @Inject
+    public Student(Application application,Li li){
+        name = li.getName();
+        mApplication = application;
     }
 
 
@@ -28,4 +36,9 @@ public class Student {
     public void setName(String name) {
         this.name = name;
     }
+
+    public Application getmApplication() {
+        return mApplication;
+    }
+
 }

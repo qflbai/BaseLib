@@ -37,7 +37,7 @@ public class DataViewModel extends BaseViewModel<BaseModel> {
      * @param <T>
      * @return {@link RoomDatabase.Builder<T>#build()}
      */
-    public <T extends RoomDatabase> T getRoomDatabase(@NonNull Class<T> database, @Nullable String dbName){
-        return mModel.getRoomDatabase(database,dbName);
+    public <T extends RoomDatabase> T getRoomDatabase(@NonNull T database, @Nullable String dbName){
+        return mModel.getRoomDatabase(database);
     }
 }

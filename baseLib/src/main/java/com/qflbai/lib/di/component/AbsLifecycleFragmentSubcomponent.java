@@ -14,7 +14,7 @@ import dagger.android.AndroidInjector;
  * @description:
  */
 @Subcomponent(modules = {AndroidInjectionModule.class})
-public class AbsLifecycleFragmentSubcomponent {
+public interface AbsLifecycleFragmentSubcomponent extends AndroidInjector<AbsLifecycleFragment<BaseViewModel>>{
     @Subcomponent.Factory
     interface Factory extends AndroidInjector.Factory<AbsLifecycleFragment<BaseViewModel>> {
 

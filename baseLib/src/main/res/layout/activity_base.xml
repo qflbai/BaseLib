@@ -25,6 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:inflatedId="@+id/panel_import"
-            android:layout="@layout/layout_loading_view" />
+            android:layout="@layout/layout_loading_view"
+            />
     </RelativeLayout>
 </LinearLayout>

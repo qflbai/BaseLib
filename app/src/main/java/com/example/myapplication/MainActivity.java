@@ -1,7 +1,7 @@
 package com.example.myapplication;
 
-import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -9,7 +9,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.myapplication.dagger.Student;
+import com.example.myapplication.dagger.id.DaggerDraggerComponent;
 import com.qflbai.lib.base.activity.BaseActivity;
+import com.qflbai.lib.utils.log.LogUtil;
 
 import javax.inject.Inject;
 
@@ -36,7 +38,9 @@ public class MainActivity extends BaseActivity {
         TextView tvSubtitleTitle = getTvSubtitleTitle();
         tvSubtitleTitle.setVisibility(View.VISIBLE);
         tvSubtitleTitle.setText("wwwww");
-
-
+        showDialogLoading();
+        DaggerDraggerComponent.builder().application((Application) App.getAPPContext()).build().inject(this);
+        String name = student.getName();
+        LogUtil.i(tag,name+"  "+student.getmApplication());
     }
 }

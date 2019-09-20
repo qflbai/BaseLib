@@ -40,7 +40,9 @@ public class LoadingIndicatorView extends View {
     private int h;
     private int cy;
     private int cx;
-    private float mRadius;
+    private float mPonintRadius;
+    private Context mContext;
+    private float mCircleRadius;
 
     public LoadingIndicatorView(Context context) {
         this(context, null);
@@ -68,6 +70,9 @@ public class LoadingIndicatorView extends View {
         this.h = h;
         cx = w / 2;
         cy = h / 2;
+
+        mPonintRadius = DensityUtil.dip2px(mContext, (w/32));
+        mCircleRadius = DensityUtil.dip2px(mContext, (w/8));
     }
 
     private void init(Context context, AttributeSet attrs, int i) {
@@ -76,7 +81,7 @@ public class LoadingIndicatorView extends View {
         mPaint.setColor(colorAccent);
         mPaint.setStyle(Paint.Style.FILL);
         mPaint.setAntiAlias(true);
-        mRadius = DensityUtil.dip2px(context, 3);
+        mContext = context;
     }
 
 
@@ -85,12 +90,12 @@ public class LoadingIndicatorView extends View {
 
         for (int i = 0; i < 8; i++) {
             canvas.save();
-            Point point = circleAt(getWidth(), getHeight(), getWidth() / 3 - mRadius, i * (Math.PI / 4));
+            Point point = circleAt(getWidth(), getHeight(), mCircleRadius, i * (Math.PI / 4));
             canvas.translate(point.x, point.y);
             //canvas.rotate(45);
             canvas.scale(scaleFloats[i], scaleFloats[i]);
             mPaint.setAlpha(alphas[i]);
-            canvas.drawCircle(0, 0, mRadius, mPaint);
+            canvas.drawCircle(0, 0, mPonintRadius, mPaint);
             canvas.restore();
         }
     }

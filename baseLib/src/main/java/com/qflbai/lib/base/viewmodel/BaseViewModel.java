@@ -17,7 +17,7 @@ import javax.inject.Inject;
  * @Date: 2018/11/2.
  * @Description:
  */
-public class BaseViewModel<T extends BaseModel> extends AndroidViewModel implements IViewModel, ILoading {
+public class BaseViewModel<T extends BaseModel> extends AndroidViewModel implements IViewModel {
     public String tag = getClaseName();
 
     public T mModel;
@@ -29,14 +29,6 @@ public class BaseViewModel<T extends BaseModel> extends AndroidViewModel impleme
 
     private String getClaseName() {
         return getClass().getSimpleName();
-    }
-
-    @Override
-    protected void onCleared() {
-        super.onCleared();
-        if (mModel != null) {
-
-        }
     }
 
 
@@ -67,7 +59,15 @@ public class BaseViewModel<T extends BaseModel> extends AndroidViewModel impleme
 
     @Override
     public void onDestroy() {
+        if(mModel != null){
+            mModel.onDestroy();
+            mModel = null;
+        }
+    }
 
+    @Override
+    protected void onCleared() {
+        super.onCleared();
     }
 
     @Override
@@ -75,13 +75,4 @@ public class BaseViewModel<T extends BaseModel> extends AndroidViewModel impleme
 
     }
 
-    @Override
-    public void showLoading() {
-
-    }
-
-    @Override
-    public void hideLoading() {
-
-    }
 }

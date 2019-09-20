@@ -5,13 +5,22 @@ package com.qflbai.lib.base.viewmodel;
  */
 public interface ILoading {
     /**
-     * 显示加载
+     * 显示页面加载
      */
-    void showLoading();
+    void showLayoutLoading();
 
     /**
-     * 隐藏加载
+     * 隐藏页面加载
      */
-    void hideLoading();
+    void hideLayoutLoading();
+    /**
+     * 显示弹窗加载
+     */
+    void showDialogLoading();
+
+    /**
+     * 隐藏弹窗加载
+     */
+    void hidDialogLoading();
 
 }

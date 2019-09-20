@@ -19,6 +19,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.qflbai.lib.R;
 import com.qflbai.lib.base.LibBaseActivity;
+import com.qflbai.lib.ui.dialog.LoadingDialog;
 
 import butterknife.ButterKnife;
 import dagger.android.AndroidInjection;
@@ -38,10 +39,10 @@ public class BaseActivity extends LibBaseActivity {
     private View mContentView;
     private RelativeLayout mContainer;
     private View mErrorView;
+    private LoadingDialog mLoadingDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
         mSavedInstanceState = savedInstanceState;
@@ -206,6 +207,28 @@ public class BaseActivity extends LibBaseActivity {
             mContentView.setVisibility(View.INVISIBLE);
         }
 
+    }
+
+    /**
+     * 显示弹窗加载
+     */
+    public void showDialogLoading() {
+        mLoadingDialog = LoadingDialog.newInstance();
+        mLoadingDialog.showLoad(getSupportFragmentManager());
+    }
+
+    public void showDialogLoading(String hint) {
+        mLoadingDialog = LoadingDialog.newInstance();
+        mLoadingDialog.showLoad(getSupportFragmentManager(),hint);
+    }
+
+    /**
+     * 隐藏弹窗加载
+     */
+    public void hidDialogLoading() {
+        if(mLoadingDialog!=null){
+            mLoadingDialog.dismiss();
+        }
     }
 
     /**
@@ -435,6 +458,7 @@ public class BaseActivity extends LibBaseActivity {
         onFinish();
         System.exit(0);
     }
+
 
 
 }

@@ -8,8 +8,6 @@ import androidx.room.RoomDatabase;
 
 import com.qflbai.lib.base.data.ViewState;
 import com.qflbai.lib.base.repository.IDataRepository;
-import com.qflbai.lib.constant.ConstantValues;
-
 import javax.inject.Inject;
 
 import io.reactivex.disposables.CompositeDisposable;
@@ -32,6 +30,7 @@ public class BaseModel implements IModel {
 
     @Override
     public void onDestroy() {
+        unDisposable();
         mDataRepository = null;
     }
 
@@ -54,20 +53,8 @@ public class BaseModel implements IModel {
      * @param <T>
      * @return {@link RoomDatabase.Builder<T>#build()}
      */
-    public <T extends RoomDatabase> T getRoomDatabase(@NonNull Class<T> database) {
-        return getRoomDatabase(database, ConstantValues.DEFAULT_DATABASE_NAME);
-    }
-
-    /**
-     * 传入Class 通过{@link Room#databaseBuilder},{@link RoomDatabase.Builder<T>#build()}获得对应的Class
-     *
-     * @param database
-     * @param dbName
-     * @param <T>
-     * @return {@link RoomDatabase.Builder<T>#build()}
-     */
-    public <T extends RoomDatabase> T getRoomDatabase(@NonNull Class<T> database, @Nullable String dbName) {
-        return mDataRepository.getRoomDatabase(database, dbName);
+    public <T extends RoomDatabase> T getRoomDatabase(@NonNull T database) {
+        return mDataRepository.getRoomDatabase(database);
     }
 
     private CompositeDisposable mCompositeDisposable;
