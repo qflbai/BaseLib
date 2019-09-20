@@ -7,9 +7,8 @@
 
     <com.qflbai.lib.ui.widget.Loading.LoadingIndicatorView
         android:id="@+id/img_progress"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_marginTop="50dp"
+        android:layout_width="@dimen/dp_40"
+        android:layout_height="@dimen/dp_40"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

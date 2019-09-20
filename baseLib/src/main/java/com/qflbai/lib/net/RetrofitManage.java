@@ -27,6 +27,14 @@ public class RetrofitManage {
      */
     private Retrofit downLoadRetrofit;
 
+
+    private RetrofitManage() {
+    }
+
+    public static RetrofitManage newInstance() {
+        return new RetrofitManage();
+    }
+
     /**
      * 获取Retrofit
      *
@@ -35,14 +43,34 @@ public class RetrofitManage {
      */
     private Retrofit createRetrofit(String baseUrl) {
         if (retrofit == null) {
-            retrofit = new Retrofit.Builder()
-                    .baseUrl(baseUrl)
-                    .client(NetClinet.getInstance())
-                    .addConverterFactory(FastJsonConverterFactory.create())
-                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                    .build();
+            synchronized (RetrofitManage.class) {
+                if (retrofit == null) {
+                    retrofit = new Retrofit.Builder()
+                            .baseUrl(baseUrl)
+                            .client(NetClinet.newInstance())
+                            .addConverterFactory(FastJsonConverterFactory.create())
+                            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                            .build();
+                }
+            }
         }
         return retrofit;
+    }
+
+    /**
+     * 重置baseUrl
+     *
+     * @param baseUrl
+     * @return
+     */
+    private Retrofit resetBaseRetrofit(String baseUrl) {
+        return retrofit = new Retrofit.Builder()
+                .baseUrl(baseUrl)
+                .client(NetClinet.newInstance())
+                .addConverterFactory(FastJsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build();
+
     }
 
     /**
@@ -50,10 +78,15 @@ public class RetrofitManage {
      *
      * @return
      */
-    public RetrofitService createService() {
+    public <T> T createService(Class<T> service) {
         // 获取服务器地址
         String baseUrl = NetBaseUrl.getBaseUrl();
-        return createRetrofit(baseUrl).create(RetrofitService.class);
+        return (T) createRetrofit(baseUrl).create(service);
+    }
+
+    public <T> T createService(Class<T> service,String baseUrl) {
+        // 获取服务器地址
+        return (T) resetBaseRetrofit(baseUrl).create(service);
     }
 
     /**
@@ -73,15 +106,13 @@ public class RetrofitManage {
      * @return
      */
     private Retrofit createDownloadRetrofit(String baseUrl, DownloadListener downloadListener) {
-
-        downLoadRetrofit = new Retrofit.Builder()
+        return downLoadRetrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .client(NetClinet.getDownloadInstance(downloadListener))
                 .addConverterFactory(FastJsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
 
-        return downLoadRetrofit;
     }
 
     /**

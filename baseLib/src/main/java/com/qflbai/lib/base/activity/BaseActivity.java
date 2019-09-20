@@ -21,6 +21,7 @@ import com.qflbai.lib.R;
 import com.qflbai.lib.base.LibBaseActivity;
 
 import butterknife.ButterKnife;
+import dagger.android.AndroidInjection;
 
 
 /**
@@ -40,6 +41,7 @@ public class BaseActivity extends LibBaseActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
         mSavedInstanceState = savedInstanceState;
@@ -125,6 +127,26 @@ public class BaseActivity extends LibBaseActivity {
         }
     }
 
+    protected void showLoading(String message) {
+        mContentView.setVisibility(View.INVISIBLE);
+        if (mLoadingView == null) {
+            mLoadingView = ((ViewStub) findViewById(R.id.vs_loading)).inflate();
+        } else {
+            mLoadingView.setVisibility(View.VISIBLE);
+        }
+
+        TextView tvTip = mLoadingView.findViewById(R.id.text_tip);
+        tvTip.setText(message);
+
+        if (mErrorView != null) {
+            mErrorView.setVisibility(View.GONE);
+        }
+
+        if (mContentView != null) {
+            mContentView.setVisibility(View.INVISIBLE);
+        }
+    }
+
     /**
      * 显示错误
      */
@@ -136,13 +158,45 @@ public class BaseActivity extends LibBaseActivity {
             mErrorView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    showLoading();
                     onRefresh();
                 }
             });
         } else {
             mErrorView.setVisibility(View.VISIBLE);
         }
+
+        if (mLoadingView != null) {
+            mLoadingView.setVisibility(View.GONE);
+        }
+
+        if (mContentView != null) {
+            mContentView.setVisibility(View.INVISIBLE);
+        }
+
+    }
+
+    /**
+     * 显示错误
+     */
+    protected void showError(boolean clickable, String message) {
+        if (mErrorView == null) {
+            ViewStub viewStub = (ViewStub) findViewById(R.id.vs_error_refresh);
+            mErrorView = viewStub.inflate();
+            if (clickable) {
+                // 点击加载失败布局
+                mErrorView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onRefresh();
+                    }
+                });
+            }
+        } else {
+            mErrorView.setVisibility(View.VISIBLE);
+        }
+
+        TextView tvTip = mErrorView.findViewById(R.id.text_tip);
+        tvTip.setText(message);
 
         if (mLoadingView != null) {
             mLoadingView.setVisibility(View.GONE);
@@ -220,6 +274,7 @@ public class BaseActivity extends LibBaseActivity {
 
     /**
      * 初始化带返回图标描述
+     *
      * @param title
      */
     protected void initBackToTitleToolbar(CharSequence title) {
@@ -242,8 +297,7 @@ public class BaseActivity extends LibBaseActivity {
     }
 
 
-
-    protected void initBackToTitleToolbar(CharSequence title,CharSequence backTitle) {
+    protected void initBackToTitleToolbar(CharSequence title, CharSequence backTitle) {
         Toolbar toolbar = getToolbar();
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
@@ -265,9 +319,10 @@ public class BaseActivity extends LibBaseActivity {
 
     /**
      * 设置返回标题
+     *
      * @param backTitle
      */
-    protected void setBackTitle(CharSequence backTitle){
+    protected void setBackTitle(CharSequence backTitle) {
         TextView tvBack = getTvBack();
         tvBack.setText(backTitle);
     }

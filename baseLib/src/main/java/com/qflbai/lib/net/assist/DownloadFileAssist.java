@@ -60,7 +60,7 @@ public class DownloadFileAssist {
                 downloadListener.onFail(ex);
             }
         };
-        RetrofitManage retrofitManage = new RetrofitManage();
+        RetrofitManage retrofitManage =  RetrofitManage.newInstance();
         RetrofitService service = retrofitManage.createDownloadService(baseUrl, netDownloadListener1);
         Observable<ResponseBody> download = service.download(pathUrl);
         download.subscribeOn(Schedulers.io())
@@ -114,7 +114,7 @@ public class DownloadFileAssist {
      */
     public void downloadFile(String url, final String savePath, final DownloadListener downloadListener) {
 
-        RetrofitManage retrofitManage = new RetrofitManage();
+        RetrofitManage retrofitManage = RetrofitManage.newInstance();
         RetrofitService service = retrofitManage.createDownloadService(downloadListener);
         Observable<ResponseBody> download = service.download(url);
         download.subscribeOn(Schedulers.io())

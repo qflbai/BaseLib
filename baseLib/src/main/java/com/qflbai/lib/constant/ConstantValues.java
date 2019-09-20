@@ -7,6 +7,7 @@ package com.qflbai.lib.constant;
  */
 
 public class ConstantValues {
+    public static final String DEFAULT_DATABASE_NAME = "room.db";
     /**
      * 引导页是否第一次打开key
      */

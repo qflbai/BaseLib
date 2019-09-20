@@ -1,6 +1,21 @@
 package com.qflbai.lib.base.repository;
 
+import android.app.Application;
+import android.content.Context;
+import android.text.TextUtils;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.collection.LruCache;
 import androidx.lifecycle.MutableLiveData;
+import androidx.room.Room;
+import androidx.room.RoomDatabase;
+
+import com.qflbai.lib.base.data.ViewState;
+import com.qflbai.lib.constant.ConstantValues;
+import com.qflbai.lib.net.RetrofitManage;
+
+import javax.inject.Inject;
 
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -10,32 +25,53 @@ import io.reactivex.disposables.Disposable;
  * @Date: 2018/11/2.
  * @Description:
  */
-public  class BaseRepository {
+public class BaseRepository implements IDataRepository {
 
-    private CompositeDisposable mCompositeDisposable;
-    public MutableLiveData<String> loadState;
+    @Inject
+    Application mApplication;
+    private final RetrofitManage retrofitManage;
 
+    @Inject
     public BaseRepository() {
-        loadState = new MutableLiveData<>();
+        retrofitManage = RetrofitManage.newInstance();
     }
 
-    protected void postState(String state) {
-        if (loadState != null) {
-            loadState.postValue(state);
-        }
-
+    /**
+     * 提供上下文{@link Context}
+     *
+     * @return {@link #mApplication}
+     */
+    @Override
+    public Context getContext() {
+        return mApplication;
     }
 
-    public void addDisposable(Disposable disposable) {
-        if (mCompositeDisposable == null) {
-            mCompositeDisposable = new CompositeDisposable();
-        }
-        mCompositeDisposable.add(disposable);
+    /**
+     * 传入Class 通过{@link retrofit2.Retrofit#create(Class)} 获得对应的Class
+     *
+     * @param service
+     * @param <T>
+     * @return {@link retrofit2.Retrofit#create(Class)}
+     */
+    @Override
+    public <T> T getRetrofitService(@NonNull Class<T> service) {
+        return retrofitManage.createService(service);
     }
 
-    public void unDisposable() {
-        if (mCompositeDisposable != null && mCompositeDisposable.isDisposed()) {
-            mCompositeDisposable.clear();
-        }
+    public <T> T getRetrofitService(@NonNull Class<T> service, String baseUrl) {
+        return retrofitManage.createService(service, baseUrl);
+    }
+
+    /**
+     * 传入Class 通过{@link Room#databaseBuilder},{@link RoomDatabase.Builder<T>#build()}获得对应的Class
+     *
+     * @param database
+     * @param <T>
+     * @return {@link RoomDatabase.Builder<T>#build()}
+     */
+    @Override
+    public <T extends RoomDatabase> T getRoomDatabase(@NonNull Class<T> database, @Nullable String dbName) {
+        RoomDatabase.Builder<T> builder = Room.databaseBuilder(getContext().getApplicationContext(), database, TextUtils.isEmpty(dbName) ? ConstantValues.DEFAULT_DATABASE_NAME : dbName);
+        return builder.build();
     }
 }

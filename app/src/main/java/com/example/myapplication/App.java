@@ -1,6 +1,9 @@
 package com.example.myapplication;
 
+import com.example.myapplication.di.component.ApplicationComponent;
+import com.example.myapplication.di.component.DaggerApplicationComponent;
 import com.qflbai.lib.base.BaseApplication;
+
 
 /**
  * @author: qflbai
@@ -9,4 +12,14 @@ import com.qflbai.lib.base.BaseApplication;
  * @description:
  */
 public class App extends BaseApplication {
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        ApplicationComponent applicationComponent = (ApplicationComponent) DaggerApplicationComponent.builder()
+                .appComponent(getAppComponent())
+                .build();
+        //注入
+        applicationComponent.inject(this);
+
+    }
 }

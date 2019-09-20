@@ -1,11 +1,16 @@
 package com.qflbai.lib.net.rxjava;
 
 import android.content.Context;
-import android.content.Intent;
+
+import androidx.lifecycle.MutableLiveData;
 
 import com.alibaba.fastjson.JSONObject;
+import com.qflbai.lib.base.BaseApplication;
+import com.qflbai.lib.base.data.ViewState;
 import com.qflbai.lib.net.body.ServerResponseResult;
 import com.qflbai.lib.net.callback.DataNetCallback;
+import com.qflbai.lib.net.callback.NetCallback;
+import com.qflbai.lib.utils.toast.ToastUtil;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
@@ -21,19 +26,28 @@ import retrofit2.Response;
  * @Description:
  */
 
-public class DataNetObserver extends BaseObserver {
+public class DataNetObserver<T> extends BaseObserver {
     /**
      * 回调接口
      */
-    private DataNetCallback mNetCallback;
+    private DataNetCallback<T> mNetCallback;
     /**
      * 上下文
      */
     private Context mContext;
+    private MutableLiveData<ViewState> mLiveData;
+    private ViewState mViewState;
 
-    public DataNetObserver(Context context, DataNetCallback netCallback) {
+    public DataNetObserver(DataNetCallback<T> netCallback) {
         mNetCallback = netCallback;
-        mContext = context;
+        mContext = BaseApplication.getAPPContext();
+    }
+
+    public DataNetObserver(DataNetCallback<T> netCallback, MutableLiveData<ViewState> liveData) {
+        mNetCallback = netCallback;
+        mContext = BaseApplication.getAPPContext();
+        mLiveData = liveData;
+        mViewState = new ViewState();
     }
 
     @Override
@@ -42,7 +56,10 @@ public class DataNetObserver extends BaseObserver {
             d.dispose();
         } else {
             mNetCallback.onSubscribe(d);
-            addNetManage(d);
+            if (mLiveData != null) {
+                mViewState.setState(ViewState.State.loading);
+                mLiveData.postValue(mViewState);
+            }
         }
         mIsNetRequesting = true;
     }
@@ -59,31 +76,22 @@ public class DataNetObserver extends BaseObserver {
                     String jsonString = response.body().string();
                     try {
                         ServerResponseResult serverResponseResult = JSONObject.parseObject(jsonString, ServerResponseResult.class);
-                        Object data = serverResponseResult.getData();
-                        String json = JSONObject.toJSONString(data);
-                        if (serverResponseResult.isSuccess()) {
-                            mNetCallback.onOkResponse(json);
-                        } else {
-
-                            int resultCode = serverResponseResult.getCode();
-                          //  String stateMessage = ServerResponseState.getStateMessage(resultCode);
-                           /* if (!stateMessage.isEmpty()) {
-                                //ToastUtil.show(mContext, stateMessage);
-                                mNetCallback.onFailResponse(json, serverResponseResult);
-                            } else {
-                                mNetCallback.onFailResponse(json, serverResponseResult);
-                            }*/
-
+                        T data = (T) serverResponseResult.getData();
+                        if (mLiveData != null) {
+                            mViewState.setState(ViewState.State.loadingOk);
+                            mLiveData.postValue(mViewState);
                         }
+                        mNetCallback.onOkResponse(serverResponseResult, data);
+
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 } catch (IOException e) {
-                    //ToastUtil.show(mContext, "IO异常");
+                    ToastUtil.show(mContext, "IO异常");
                     mNetCallback.onError(e);
                     e.printStackTrace();
                 } catch (Exception e) {
-                    //ToastUtil.show(mContext, "请求异常");
+                    ToastUtil.show(mContext, "请求异常");
                     mNetCallback.onError(e);
                     e.printStackTrace();
                 }
@@ -103,24 +111,25 @@ public class DataNetObserver extends BaseObserver {
     private void netError(Response<ResponseBody> response) {
         HttpException httpException = new HttpException(response);
         int code = httpException.code();
-        if (code == 401) {
-            //ToastUtil.show(mContext, code + "登陆超时...");
-            Intent intent = new Intent();
-            intent.setAction("com.suntech.app.xiuzheng.launch.ui.LoginActivity");
-            intent.addCategory("android.intent.category.DEFAULT");
-            mContext.startActivity(intent);
-        } else {
-            //ToastUtil.show(mContext, code + "错误");
-            mNetCallback.onError(httpException);
+        ToastUtil.showCenter(mContext, code + "");
+        if (mLiveData != null) {
+            mViewState.setState(ViewState.State.netError);
+            mViewState.setMessage("加载失败");
+            mLiveData.postValue(mViewState);
         }
-
+        mNetCallback.onError(httpException);
     }
 
     @Override
     public void onError(Throwable e) {
         mIsNetRequesting = false;
         if (e instanceof SocketTimeoutException) {
-            //ToastUtil.show(mContext, "网络连接超时");
+            ToastUtil.showCenter(mContext, "网络连接超时");
+        }
+        if (mLiveData != null) {
+            mViewState.setState(ViewState.State.netError);
+            mViewState.setMessage("加载失败");
+            mLiveData.postValue(mViewState);
         }
         mNetCallback.onError(e);
     }

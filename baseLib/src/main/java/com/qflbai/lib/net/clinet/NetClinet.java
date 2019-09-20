@@ -17,8 +17,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
  */
 
 public class NetClinet {
-    private static OkHttpClient okHttpClient = null;
-    private static OkHttpClient okHttpDownloadClient = null;
+
     /**
      * 网络读取超时时间
      */
@@ -44,25 +43,24 @@ public class NetClinet {
      *
      * @return
      */
-    public static synchronized OkHttpClient getInstance() {
-        if (okHttpClient == null) {
-            HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor(new LogInterceptor());
-            logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+    public static synchronized OkHttpClient newInstance() {
 
-            okHttpClient = new OkHttpClient.Builder()
-                    .connectTimeout(CONNECT_TIME_OUT, timeUnit)
-                    .readTimeout(READ_TIME_OUT, timeUnit)
-                    .writeTimeout(WRITE_TIME_OUT, timeUnit)
-                    .addNetworkInterceptor(new TokenHeaderInterceptor())
-                    .addNetworkInterceptor(logInterceptor)
-                    .build();
-        }
-        return okHttpClient;
+        HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor(new LogInterceptor());
+        logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        return new OkHttpClient.Builder()
+                .connectTimeout(CONNECT_TIME_OUT, timeUnit)
+                .readTimeout(READ_TIME_OUT, timeUnit)
+                .writeTimeout(WRITE_TIME_OUT, timeUnit)
+                .addNetworkInterceptor(new TokenHeaderInterceptor())
+                .addNetworkInterceptor(logInterceptor)
+                .build();
+
     }
 
 
     /**
-     * 适用于不带token请求
+     * 下载
      *
      * @return
      */
@@ -71,7 +69,7 @@ public class NetClinet {
         HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor(new LogInterceptor());
         logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-        okHttpDownloadClient = new OkHttpClient.Builder()
+        return new OkHttpClient.Builder()
                 .connectTimeout(CONNECT_TIME_OUT, timeUnit)
                 .readTimeout(READ_TIME_OUT, timeUnit)
                 .writeTimeout(WRITE_TIME_OUT, timeUnit)
@@ -79,8 +77,6 @@ public class NetClinet {
                 .addNetworkInterceptor(logInterceptor)
                 .build();
 
-        return okHttpDownloadClient;
     }
-
 
 }

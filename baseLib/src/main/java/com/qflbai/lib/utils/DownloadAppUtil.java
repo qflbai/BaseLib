@@ -50,7 +50,7 @@ public class DownloadAppUtil {
         // 下载路径
         String baseurl = "http://e.sun-tech.cn/liangziyunma/appindex/";
         String path = "synchronizeRecording_getVerion.do";
-        RetrofitManage retrofitManage = new RetrofitManage();
+        RetrofitManage retrofitManage = RetrofitManage.newInstance();
         RetrofitService service = retrofitManage.createService(baseurl);
         mSubscribe = service.getNet(path)
                 .subscribeOn(Schedulers.io())

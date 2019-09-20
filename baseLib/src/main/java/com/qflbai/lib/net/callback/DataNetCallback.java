@@ -8,7 +8,7 @@ import com.qflbai.lib.net.body.ServerResponseResult;
  * @Description: 网络请求回调
  */
 
-public interface DataNetCallback extends BaseNetCallback {
+public interface DataNetCallback<T> extends BaseNetCallback {
 
 
     /**
@@ -16,7 +16,7 @@ public interface DataNetCallback extends BaseNetCallback {
      *
      * @param dataJson 请求成功json数据
      */
-    void onOkResponse(String dataJson);
+    void onOkResponse(ServerResponseResult serverResponseResult,T dataJson);
 
     /**
      * 网路请求成功

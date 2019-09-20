@@ -164,6 +164,34 @@ public abstract class BaseFragment extends Fragment {
     }
 
     /**
+     * 显示加载中状态
+     */
+    protected void showLoading(String message) {
+
+        if (mErrorView != null) {
+            mErrorView.setVisibility(View.GONE);
+        }
+
+        if (mEmptyView != null) {
+            mEmptyView.setVisibility(View.GONE);
+        }
+
+        if (mContentView != null) {
+            mContentView.setVisibility(View.INVISIBLE);
+        }
+
+        if (mLoadingView == null) {
+            mLoadingView = ((ViewStub) mContainer.findViewById(R.id.vs_loading)).inflate();
+
+        } else {
+            mLoadingView.setVisibility(View.VISIBLE);
+        }
+        TextView tvTip = mLoadingView.findViewById(R.id.text_tip);
+        tvTip.setText(message);
+    }
+
+
+    /**
      * 加载完成的状态
      */
     protected void showContentView() {
@@ -209,6 +237,39 @@ public abstract class BaseFragment extends Fragment {
         }
     }
 
+    protected void showError(boolean clickable, String message) {
+        if (mLoadingView != null) {
+            mLoadingView.setVisibility(View.GONE);
+        }
+
+        if (mEmptyView != null) {
+            mEmptyView.setVisibility(View.GONE);
+        }
+
+        if (mContentView != null) {
+            mContentView.setVisibility(View.INVISIBLE);
+        }
+
+        if (mErrorView == null) {
+            mErrorView = ((ViewStub) mContainer.findViewById(R.id.vs_error_refresh)).inflate();
+
+        } else {
+            mErrorView.setVisibility(View.VISIBLE);
+        }
+
+        if (clickable) {
+            mErrorView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onRefresh();
+                }
+            });
+        }
+
+        TextView tvTip = mLoadingView.findViewById(R.id.text_tip);
+        tvTip.setText(message);
+    }
+
     protected void showEmptyView() {
         if (mErrorView != null) {
             mErrorView.setVisibility(View.GONE);
@@ -230,7 +291,43 @@ public abstract class BaseFragment extends Fragment {
         }
     }
 
+    protected void showEmptyView(boolean clickable, String message) {
+        if (mErrorView != null) {
+            mErrorView.setVisibility(View.GONE);
+        }
+
+        if (mLoadingView != null) {
+            mLoadingView.setVisibility(View.GONE);
+        }
+
+        if (mContentView != null) {
+            mContentView.setVisibility(View.INVISIBLE);
+        }
+
+        if (mEmptyView == null) {
+            mEmptyView = ((ViewStub) mContainer.findViewById(R.id.vs_empty)).inflate();
+
+        } else {
+            mEmptyView.setVisibility(View.VISIBLE);
+        }
+
+        if(clickable){
+            mEmptyView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                }
+            });
+        }
+
+        TextView tvTip = mEmptyView.findViewById(R.id.tv_tip_empty);
+        tvTip.setText(message);
+
+    }
+
+
     private CompositeDisposable mCompositeDisposable;
+
     public void addSubscription(Disposable disposable) {
         if (this.mCompositeDisposable == null) {
             this.mCompositeDisposable = new CompositeDisposable();

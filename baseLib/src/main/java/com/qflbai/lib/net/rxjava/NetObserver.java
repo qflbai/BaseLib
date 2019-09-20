@@ -2,7 +2,12 @@ package com.qflbai.lib.net.rxjava;
 
 import android.content.Context;
 
+import androidx.lifecycle.MutableLiveData;
+
+import com.qflbai.lib.base.BaseApplication;
+import com.qflbai.lib.base.data.ViewState;
 import com.qflbai.lib.net.callback.NetCallback;
+import com.qflbai.lib.utils.toast.ToastUtil;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
@@ -27,10 +32,20 @@ public class NetObserver extends BaseObserver {
      * 上下文
      */
     private Context mContext;
+    private  MutableLiveData<ViewState> mLiveData;
+    private  ViewState mViewState;
 
-    public NetObserver(Context context, NetCallback netCallback) {
+    public NetObserver(NetCallback netCallback) {
         mNetCallback = netCallback;
-        mContext = context;
+        mContext = BaseApplication.getAPPContext();
+
+    }
+
+    public NetObserver(NetCallback netCallback, MutableLiveData<ViewState> liveData) {
+        mNetCallback = netCallback;
+        mContext = BaseApplication.getAPPContext();
+        mLiveData = liveData;
+        mViewState = new ViewState();
     }
 
     @Override
@@ -39,7 +54,11 @@ public class NetObserver extends BaseObserver {
             d.dispose();
         } else {
             mNetCallback.onSubscribe(d);
-            addNetManage(d);
+            //addNetManage(d);
+            if(mLiveData!=null){
+                mViewState.setState(ViewState.State.loading);
+                mLiveData.postValue(mViewState);
+            }
         }
         mIsNetRequesting = true;
     }
@@ -52,10 +71,15 @@ public class NetObserver extends BaseObserver {
             int code = response.code();
             if (code == 200) {
                 try {
+                    if(mLiveData!=null){
+                        mViewState.setState(ViewState.State.loadingOk);
+                        mLiveData.postValue(mViewState);
+                    }
+
                     String jsonString = response.body().string();
                     mNetCallback.onResponse(jsonString);
                 } catch (IOException e) {
-                    //ToastUtil.show(mContext, "IO异常");
+                    ToastUtil.show(mContext, "IO异常");
                     mNetCallback.onError(e);
                     e.printStackTrace();
                 }
@@ -75,20 +99,26 @@ public class NetObserver extends BaseObserver {
     private void netError(Response<ResponseBody> response) {
         HttpException httpException = new HttpException(response);
         int code = httpException.code();
-        if (code == 401) {
-            //ToastUtil.show(mContext, code + "登陆超时...");
-
-        } else {
-           // ToastUtil.show(mContext, code + "错误");
-            mNetCallback.onError(httpException);
+        ToastUtil.show(mContext, code + "");
+        if(mLiveData!=null){
+            mViewState.setState(ViewState.State.netError);
+            mViewState.setMessage("加载失败");
+            mLiveData.postValue(mViewState);
         }
+        mNetCallback.onError(httpException);
+
     }
 
     @Override
     public void onError(Throwable e) {
         mIsNetRequesting = false;
         if (e instanceof SocketTimeoutException) {
-            //ToastUtil.show(mContext, "网络连接超时");
+            ToastUtil.show(mContext, "网络连接超时");
+        }
+        if(mLiveData!=null){
+            mViewState.setState(ViewState.State.netError);
+            mViewState.setMessage("加载失败");
+            mLiveData.postValue(mViewState);
         }
         mNetCallback.onError(e);
     }
