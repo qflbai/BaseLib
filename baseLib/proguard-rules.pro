@@ -97,9 +97,13 @@
 -keep class android.support.** {*;}
 
 # 保留继承的
--keep public class * extends android.support.v4.**
--keep public class * extends android.support.v7.**
--keep public class * extends android.support.annotation.**
+-keep class com.google.android.material.** {*;}
+-keep class androidx.** {*;}
+-keep public class * extends androidx.**
+-keep interface androidx.** {*;}
+-dontwarn com.google.android.material.**
+-dontnote com.google.android.material.**
+-dontwarn androidx.**
 
 #########################################app中不混淆的##############################################
 -keep class com.qflbai.lib.net.body.**{*;}
@@ -142,10 +146,6 @@
 -dontwarn com.alibaba.fastjson.**
 -keep class com.alibaba.fastjson.**{*; }
 
-#  百度导航的不需要混淆
--dontwarn com.baidu.navisdk.comapi.tts.ttsplayer**
--keep class com.baidu.navisdk.**{*;}
--keep class com.baidu.** { *; }
 
 
 

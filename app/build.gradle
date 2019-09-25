@@ -11,20 +11,69 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
+
+        /*javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [AROUTER_MODULE_NAME: project.getName()]
+            }
+        }*/
+
         multiDexEnabled true
     }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+
+    signingConfigs {
+        config {
+            keyAlias 'qflbai'
+            keyPassword 'qflbaikey'
+            storeFile file('../qflbai.jks')
+            storePassword 'qflbaikey'
         }
     }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.config
+            // 删除无用资源
+            //shrinkResources true
+            // 优化应用程序
+            zipAlignEnabled false
+            minifyEnabled false
+
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
+            signingConfig signingConfigs.config
+            // 删除无用资源
+            shrinkResources true
+            // 优化应用程序
+            zipAlignEnabled true
+            minifyEnabled true
+
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    gradle.startParameter.getTaskNames().each { task ->
+        //library里 BuildConfig.DEBUG默认一直是flase;所以需要自定义
+        if (task.contains("Debug")) {
+            android {
+                defaultPublishConfig "debug"
+            }
+
+        } else if (task.contains("Release")) {
+            android {
+                defaultPublishConfig "release"
+            }
+        }
+    }
 }
 
 dependencies {
@@ -35,8 +84,62 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
+    // baseLib
     implementation project(path: ':baseLib')
+
+   // implementation files('libs\\baseLib-release.aar')
+
+    implementation 'com.google.dagger:dagger-android:2.23.2'
+    implementation 'com.google.dagger:dagger-android-support:2.23.2'
+    // if you use the support libraries
     annotationProcessor 'com.google.dagger:dagger-android-processor:2.23.2'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.23.2'
+
+    // fastjson
+    implementation 'com.alibaba:fastjson:1.2.59'
+    implementation 'com.alibaba:fastjson:1.2.59.android'
+
+    // retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.6.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.6.0'
+    // okhttp
+    implementation 'com.squareup.okhttp3:okhttp:3.12.3'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.11.0'
+    implementation 'com.squareup.okhttp3:okhttp-urlconnection:3.11.0'
+    // rxjava2
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.10'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    // multiDexEnabled
+    implementation 'androidx.multidex:multidex:2.0.1'
+
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+
+    implementation 'com.jakewharton:butterknife:10.1.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
+
+    // arouter
+   // implementation 'com.alibaba:arouter-api:1.5.0'
+   // annotationProcessor 'com.alibaba:arouter-compiler:1.2.2'
+
+    //图片轮播
+    // api 'com.youth.banner:banner:1.4.10'
+    // glide
+    implementation 'com.github.bumptech.glide:glide:4.9.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
+
+    //room
+    implementation 'androidx.room:room-runtime:2.1.0'
+    annotationProcessor 'androidx.room:room-compiler:2.1.0'
+    // optional - RxJava support for Room
+    implementation 'androidx.room:room-rxjava2:2.1.0'
+    // optional - Guava support for Room, including Optional and ListenableFuture
+    implementation 'androidx.room:room-guava:2.1.0'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
+    // Test helpers
+    // testImplementation "androidx.room:room-testing:2.1.0"
+
+    // evenbus
+    implementation 'org.greenrobot:eventbus:3.1.1'
+
 
 }

@@ -91,11 +91,11 @@ public class AppCrashHandler implements Thread.UncaughtExceptionHandler {
     /**
      * 文件名
      */
-    private String mFileName = LibConfig.FILE_NAME_CRASH;
+    private String mFileName = LibConfig.getSuntechPath();
     /**
      * 文件保存路径
      */
-    private String mPath = LibConfig.SUNTECH_PATH;
+    private String mPath = LibConfig.getDOWNLOAD();
 
     /**
      * 异常处理

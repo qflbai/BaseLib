@@ -13,7 +13,7 @@ public class LibConfig {
     /**
      * 应用文件夹名
      */
-    private final static String APP_FOLDER_NAME = "suntech";
+    private final static String APP_FOLDER_NAME = "qfl";
 
     /**
      * 手机存储卡根目录
@@ -23,20 +23,20 @@ public class LibConfig {
     /**
      * 应用存储卡目录
      */
-    public final static String SUNTECH_PATH = ROOT_PATH + File.separator + APP_FOLDER_NAME;
+    private final static String SUNTECH_PATH = ROOT_PATH + File.separator + APP_FOLDER_NAME;
     /**
      * 未捕获的异常文件名
      */
-    public final static String FILE_NAME_CRASH = "crash.log";
+    private final static String FILE_NAME_CRASH = "crash.log";
     /**
      * 异常文件名
      */
-    public final static String FILE_NAME_EX = "ex.log";
+    private final static String FILE_NAME_EX = "ex.log";
 
     /**
      * 下载目录
      */
-    public final static String DOWNLOAD = SUNTECH_PATH+"download";
+    private final static String DOWNLOAD = SUNTECH_PATH + "download";
 
     /**
      * 总部路径
@@ -52,4 +52,19 @@ public class LibConfig {
         public final static String HWADQUARTERS_PATH = SUNTECH_PATH + File.separator + APP_FOLDER_NAME;
     }
 
+    public synchronized static String getSuntechPath() {
+        File file = new File(SUNTECH_PATH);
+        if(!file.exists()){
+            file.mkdir();
+        }
+        return SUNTECH_PATH;
+    }
+
+    public synchronized static String getDOWNLOAD() {
+        File file = new File(SUNTECH_PATH);
+        if(!file.exists()){
+            file.mkdir();
+        }
+        return DOWNLOAD;
+    }
 }

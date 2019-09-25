@@ -5,16 +5,16 @@ android {
     buildToolsVersion "29.0.2"
     defaultConfig {
         minSdkVersion 19
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        javaCompileOptions {
+       /* javaCompileOptions {
             annotationProcessorOptions {
                 arguments = [AROUTER_MODULE_NAME: project.getName()]
             }
-        }
+        }*/
     }
 
 
@@ -80,60 +80,60 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     // multiDexEnabled
-    api 'androidx.multidex:multidex:2.0.1'
+    implementation 'androidx.multidex:multidex:2.0.1'
 
-    api 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
 
-    api 'com.jakewharton:butterknife:10.1.0'
+    implementation 'com.jakewharton:butterknife:10.1.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
 
     // arouter
-    api 'com.alibaba:arouter-api:1.5.0'
-    annotationProcessor 'com.alibaba:arouter-compiler:1.2.2'
+    //api 'com.alibaba:arouter-api:1.5.0'
+    //annotationProcessor 'com.alibaba:arouter-compiler:1.2.2'
 
     //图片轮播
    // api 'com.youth.banner:banner:1.4.10'
     // glide
-    api 'com.github.bumptech.glide:glide:4.9.0'
+    implementation 'com.github.bumptech.glide:glide:4.9.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
 
     //room
-    api 'androidx.room:room-runtime:2.1.0'
+    implementation 'androidx.room:room-runtime:2.1.0'
     annotationProcessor 'androidx.room:room-compiler:2.1.0'
     // optional - RxJava support for Room
-    api 'androidx.room:room-rxjava2:2.1.0'
+    implementation 'androidx.room:room-rxjava2:2.1.0'
     // optional - Guava support for Room, including Optional and ListenableFuture
-    api 'androidx.room:room-guava:2.1.0'
-    api 'androidx.lifecycle:lifecycle-extensions:2.1.0'
+    implementation 'androidx.room:room-guava:2.1.0'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
     // Test helpers
    // testImplementation "androidx.room:room-testing:2.1.0"
 
     // fastjson
-    api 'com.alibaba:fastjson:1.2.59'
-    api 'com.alibaba:fastjson:1.2.59.android'
+    implementation 'com.alibaba:fastjson:1.2.59'
+    implementation 'com.alibaba:fastjson:1.2.59.android'
 
     // retrofit
-    api 'com.squareup.retrofit2:retrofit:2.6.0'
-    api 'com.squareup.retrofit2:adapter-rxjava2:2.6.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.6.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.6.0'
     // okhttp
-    api 'com.squareup.okhttp3:okhttp:3.12.3'
-    api 'com.squareup.okhttp3:logging-interceptor:3.11.0'
-    api 'com.squareup.okhttp3:okhttp-urlconnection:3.11.0'
+    implementation 'com.squareup.okhttp3:okhttp:3.12.3'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.11.0'
+    implementation 'com.squareup.okhttp3:okhttp-urlconnection:3.11.0'
     // rxjava2
-    api 'io.reactivex.rxjava2:rxjava:2.2.10'
-    api 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.10'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
 
     //dagger
-    api 'com.google.dagger:dagger-android:2.23.2'
-    api 'com.google.dagger:dagger-android-support:2.23.2' // if you use the support libraries
+    implementation 'com.google.dagger:dagger-android:2.23.2'
+    implementation 'com.google.dagger:dagger-android-support:2.23.2' // if you use the support libraries
     annotationProcessor 'com.google.dagger:dagger-android-processor:2.23.2'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.23.2'
 
 
     // 三级联动
     // api 'com.contrarywind:Android-PickerView:4.1.6'
-    api 'com.google.zxing:core:3.3.3'
+    implementation 'com.google.zxing:core:3.3.3'
 
     // evenbus
-    api 'org.greenrobot:eventbus:3.1.1'
+    implementation 'org.greenrobot:eventbus:3.1.1'
 }
