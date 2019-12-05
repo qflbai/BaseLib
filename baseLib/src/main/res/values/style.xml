@@ -5,7 +5,6 @@
     <style name="LibAppTheme" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:fitsSystemWindows">true</item>
     </style>
 
     <!-- Base application theme. -->

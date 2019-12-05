@@ -36,7 +36,7 @@ public abstract class BaseFragment extends Fragment {
     private RelativeLayout mContainer;
     // fragment是否显示了
     private boolean mIsVisible;
-    private Context mContext;
+    public Context mContext;
     /**
      * 加载view
      */

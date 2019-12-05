@@ -87,7 +87,7 @@ dependencies {
     // baseLib
     implementation project(path: ':baseLib')
 
-   // implementation files('libs\\baseLib-release.aar')
+    // implementation files('libs\\baseLib-release.aar')
 
     implementation 'com.google.dagger:dagger-android:2.23.2'
     implementation 'com.google.dagger:dagger-android-support:2.23.2'
@@ -118,8 +118,8 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
 
     // arouter
-   // implementation 'com.alibaba:arouter-api:1.5.0'
-   // annotationProcessor 'com.alibaba:arouter-compiler:1.2.2'
+    // implementation 'com.alibaba:arouter-api:1.5.0'
+    // annotationProcessor 'com.alibaba:arouter-compiler:1.2.2'
 
     //图片轮播
     // api 'com.youth.banner:banner:1.4.10'

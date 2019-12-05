@@ -74,19 +74,10 @@ public class RetrofitManage {
     }
 
     /**
-     * 获取RetrofitService
-     *
-     * @return
+     * 默认使用RetrofitService
      */
-    public <T> T createService(Class<T> service) {
-        // 获取服务器地址
-        String baseUrl = NetBaseUrl.getBaseUrl();
-        return (T) createRetrofit(baseUrl).create(service);
-    }
-
-    public <T> T createService(Class<T> service,String baseUrl) {
-        // 获取服务器地址
-        return (T) resetBaseRetrofit(baseUrl).create(service);
+    public RetrofitService createService() {
+        return createService(RetrofitService.class);
     }
 
     /**
@@ -98,6 +89,23 @@ public class RetrofitManage {
     public RetrofitService createService(String baseUrl) {
         return createRetrofit(baseUrl).create(RetrofitService.class);
     }
+
+    /**
+     * 获取RetrofitService
+     *
+     * @return
+     */
+    public <T> T createService(Class<T> service) {
+        // 获取服务器地址
+        String baseUrl = NetBaseUrl.getBaseUrl();
+        return (T) createRetrofit(baseUrl).create(service);
+    }
+
+    public <T> T createService(Class<T> service, String baseUrl) {
+        // 获取服务器地址
+        return (T) resetBaseRetrofit(baseUrl).create(service);
+    }
+
 
     /**
      * 获取Retrofit(下载)

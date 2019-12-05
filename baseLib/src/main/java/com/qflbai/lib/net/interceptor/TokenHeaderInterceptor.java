@@ -1,6 +1,6 @@
 package com.qflbai.lib.net.interceptor;
 
-import com.qflbai.lib.net.url.NetApi;
+import com.qflbai.lib.net.url.BaseNetApi;
 
 import java.io.IOException;
 
@@ -19,7 +19,7 @@ public class TokenHeaderInterceptor implements Interceptor {
 
     @Override
     public Response intercept(Chain chain) throws IOException {
-        String token = NetApi.getToken();
+        String token = BaseNetApi.getToken();
         Request originalRequest = chain.request();
         // get new request, add request header
         Request updateRequest = originalRequest.newBuilder()

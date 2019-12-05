@@ -136,4 +136,18 @@ dependencies {
 
     // evenbus
     implementation 'org.greenrobot:eventbus:3.1.1'
+
+    // 状态栏基础依赖包，必须要依赖
+    implementation 'com.gyf.immersionbar:immersionbar:3.0.0'
+    // fragment快速实现（可选）
+    implementation 'com.gyf.immersionbar:immersionbar-components:3.0.0'
+
+    //基础工具库
+    implementation "com.github.tamsiree.RxTool:RxKit:v2.4.1"
+    //相机库
+    implementation "com.github.tamsiree.RxTool:RxCamera:v2.4.1"
+    //UI库
+    implementation "com.github.tamsiree.RxTool:RxUI:v2.4.1"
+    //(依赖RxUI库时，需要额外依赖 cardview 库)
+    implementation 'androidx.cardview:cardview:1.0.0'
 }

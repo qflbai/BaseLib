@@ -32,7 +32,7 @@ public class NetBaseUrl {
     /**
      * 根路径
      */
-    private static final String URL_BASE_PATH = "http://39.104.20.177/tianrun/";
+    private static final String URL_BASE_PATH = "";
 
     /**
      * 路径
@@ -40,12 +40,6 @@ public class NetBaseUrl {
     private static final String URL_PATH = URL_BASE_PATH;
 
 
-    private static final String dgc_ip = "http://192.168.1.3:8080/tang-erp/";
-    private static final String lzy_ip="http://192.168.1.4:8081/tang-erp/";
-    private static final String qk_ip="http://192.168.1.116:7080/xzqg/";
-    private static final String llh_ip= "http://192.168.1.131:8888/zengqiangban/";
-
-    private static final String ce_ip= "http://192.168.1.131:8989/ceshi002/";
     /**
      * debug模式主机地址
      */

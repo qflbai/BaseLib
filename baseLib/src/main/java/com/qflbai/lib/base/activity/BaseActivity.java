@@ -17,6 +17,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 
+import com.gyf.immersionbar.ImmersionBar;
 import com.qflbai.lib.R;
 import com.qflbai.lib.base.LibBaseActivity;
 import com.qflbai.lib.ui.dialog.LoadingDialog;
@@ -46,10 +47,12 @@ public class BaseActivity extends LibBaseActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
         mSavedInstanceState = savedInstanceState;
+
     }
 
     @Override
     public void setContentView(int layoutResID) {
+
         mRootView = LayoutInflater.from(mContext).inflate(R.layout.activity_base, null, false);
 
         mContentView = LayoutInflater.from(mContext).inflate(layoutResID, null, false);
@@ -60,8 +63,8 @@ public class BaseActivity extends LibBaseActivity {
         mContainer.addView(mContentView);
 
         setContentView(mRootView);
-
         ButterKnife.bind(this);
+        initStatusBar();
         initViews(mSavedInstanceState);
 
     }
@@ -219,14 +222,14 @@ public class BaseActivity extends LibBaseActivity {
 
     public void showDialogLoading(String hint) {
         mLoadingDialog = LoadingDialog.newInstance();
-        mLoadingDialog.showLoad(getSupportFragmentManager(),hint);
+        mLoadingDialog.showLoad(getSupportFragmentManager(), hint);
     }
 
     /**
      * 隐藏弹窗加载
      */
-    public void hidDialogLoading() {
-        if(mLoadingDialog!=null){
+    public void hideDialogLoading() {
+        if (mLoadingDialog != null) {
             mLoadingDialog.dismiss();
         }
     }
@@ -255,7 +258,10 @@ public class BaseActivity extends LibBaseActivity {
      * 状态栏初始化
      */
     protected void initStatusBar() {
-
+        ImmersionBar.with(this)
+                .titleBar(getToolbar())
+                .statusBarDarkFont(true)
+                .init();
     }
 
 
@@ -272,7 +278,7 @@ public class BaseActivity extends LibBaseActivity {
 
         setToolbarTitle(title);
         ImageView ivBack = getIvBack();
-        ivBack.setImageResource(R.mipmap.ic_menu_back);
+        ivBack.setImageResource(R.mipmap.ic_fan_hui);
         LinearLayout llBack = getLlBack();
         llBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -309,7 +315,7 @@ public class BaseActivity extends LibBaseActivity {
         setToolbarTitle(title);
         setBackTitle("返回");
         ImageView ivBack = getIvBack();
-        ivBack.setImageResource(R.mipmap.ic_menu_back);
+        ivBack.setImageResource(R.mipmap.ic_fan_hui);
         LinearLayout llBack = getLlBack();
         llBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -329,7 +335,7 @@ public class BaseActivity extends LibBaseActivity {
         setToolbarTitle(title);
 
         ImageView ivBack = getIvBack();
-        ivBack.setImageResource(R.mipmap.ic_menu_back);
+        ivBack.setImageResource(R.mipmap.ic_fan_hui);
         LinearLayout llBack = getLlBack();
         llBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -458,7 +464,6 @@ public class BaseActivity extends LibBaseActivity {
         onFinish();
         System.exit(0);
     }
-
 
 
 }
