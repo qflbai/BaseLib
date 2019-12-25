@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -24,6 +26,8 @@ public class TreeAdapter<T extends RvTree> extends RecyclerView.Adapter<TreeAdap
     private Context mContext;
     private List<Node<T>> mNodes;
     private TreeItemClickListener mListener;
+    private int mLayout;
+    private View itemView;
 
     /**
      * 要在{@link #setNodes(List)}之后才会刷新数据
@@ -127,10 +131,20 @@ public class TreeAdapter<T extends RvTree> extends RecyclerView.Adapter<TreeAdap
         return -1;
     }
 
+    public void setLayoutContent(int layout) {
+        mLayout = layout;
+    }
+
     @Override
     public TreeViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
-        View view = inflater.inflate(R.layout.item_tree_rv, parent, false);
+        View view;
+        if (mLayout != 0) {
+            view = inflater.inflate(mLayout, parent, false);
+        } else {
+            view = inflater.inflate(R.layout.item_tree_rv, parent, false);
+        }
+
         return new TreeViewHolder(view);
     }
 
@@ -150,6 +164,7 @@ public class TreeAdapter<T extends RvTree> extends RecyclerView.Adapter<TreeAdap
         private ImageView icon;
         private TextView title;
         private ImageView detail;
+        private CheckBox checkBox;
 
         private TreeViewHolder(View itemView) {
             super(itemView);
@@ -157,6 +172,8 @@ public class TreeAdapter<T extends RvTree> extends RecyclerView.Adapter<TreeAdap
             icon = (ImageView) itemView.findViewById(R.id.rv_item_tree_icon);
             title = (TextView) itemView.findViewById(R.id.rv_item_tree_title);
             detail = (ImageView) itemView.findViewById(R.id.tv_item_tree_detail);
+            TreeAdapter.this.itemView = itemView;
+            checkBox = this.itemView.findViewById(R.id.cb);
 
             //itemView.setOnClickListener(this);
             title.setOnClickListener(this);
@@ -171,17 +188,30 @@ public class TreeAdapter<T extends RvTree> extends RecyclerView.Adapter<TreeAdap
             layoutParams.leftMargin = node.getLevel() * leftMargin;
             // title.setPadding(node.getLevel() * PADDING, 3, 3, 3);
             detail.setImageResource(node.getResId());
+
+            if (node.isLeaf()) {
+                checkBox.setVisibility(View.VISIBLE);
+                checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        node.setSelect(isChecked);
+                    }
+                });
+            } else {
+                checkBox.setVisibility(View.GONE);
+            }
+
             if (node.isLeaf()) {
                 icon.setImageResource(0);
                 return;
             }
 
 
-
             int rotateDegree = node.isExpand() ? 90 : 0;
             icon.setRotation(0);
             icon.setRotation(rotateDegree);
             icon.setImageResource(R.mipmap.ic_node_toggle);
+
         }
 
         @Override

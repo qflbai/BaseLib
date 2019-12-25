@@ -207,7 +207,7 @@ public abstract class BaseFragment extends Fragment {
             mLoadingView.setVisibility(View.GONE);
         }
 
-        if (mContentView == null) {
+        if (mContentView != null) {
             mContentView.setVisibility(View.VISIBLE);
         }
 

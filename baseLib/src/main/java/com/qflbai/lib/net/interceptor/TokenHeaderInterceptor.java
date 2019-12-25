@@ -22,9 +22,9 @@ public class TokenHeaderInterceptor implements Interceptor {
         String token = BaseNetApi.getToken();
         Request originalRequest = chain.request();
         // get new request, add request header
-        Request updateRequest = originalRequest.newBuilder()
+        /*Request updateRequest = originalRequest.newBuilder()
                 .header("Cookie", COKIE_VALUE_PREFIX + token)
-                .build();
-        return chain.proceed(updateRequest);
+                .build();*/
+        return chain.proceed(originalRequest);
     }
 }

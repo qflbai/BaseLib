@@ -15,17 +15,17 @@ public class ServerResponseResult {
      * message : 数据查询成功
      */
 
-    private boolean isSuccess;
+    private boolean succeed;
     private int code;
     private Object data;
-    private String message;
+    private String msg;
 
-    public boolean isSuccess() {
-        return isSuccess;
+    public boolean isSucceed() {
+        return succeed;
     }
 
-    public void setSuccess(boolean success) {
-        isSuccess = success;
+    public void setSucceed(boolean succeed) {
+        this.succeed = succeed;
     }
 
     public int getCode() {
@@ -44,11 +44,11 @@ public class ServerResponseResult {
         this.data = data;
     }
 
-    public String getMessage() {
-        return message;
+    public String getMsg() {
+        return msg;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 }

@@ -78,8 +78,7 @@ public class NetObserver extends BaseObserver {
 
                     String jsonString = response.body().string();
                     mNetCallback.onResponse(jsonString);
-                } catch (IOException e) {
-                    ToastUtil.show(mContext, "IO异常");
+                } catch (Exception e) {
                     mNetCallback.onError(e);
                     e.printStackTrace();
                 }

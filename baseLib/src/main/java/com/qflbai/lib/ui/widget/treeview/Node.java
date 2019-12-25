@@ -12,10 +12,12 @@ public class Node<T> {
 
     private String name;
 
+    private boolean isSelect;
+
     private T item;
 
     /** 是否展开 */
-    private boolean isExpand = false;
+    private boolean isExpand = true;
 
     private int icon;
 
@@ -26,6 +28,14 @@ public class Node<T> {
     private Node parent;
 
     private int resId;
+
+    public boolean isSelect() {
+        return isSelect;
+    }
+
+    public void setSelect(boolean select) {
+        isSelect = select;
+    }
 
     public int getIcon() {
         return icon;
@@ -110,7 +120,7 @@ public class Node<T> {
     }
 
     /**
-     * 是否是叶子界点
+     * 是否是叶子节点
      */
     public boolean isLeaf() {
         return children.size() == 0;

@@ -11,6 +11,7 @@
         android:layout_height="match_parent"
         android:padding="@dimen/dp_10"
         android:clickable="true"
+        android:background="?attr/selectableItemBackgroundBorderless"
         />
 
     <TextView
@@ -18,7 +19,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:background="@drawable/item_selector"
+        android:background="?attr/selectableItemBackground"
         android:clickable="true"
         android:gravity="center_vertical"
         android:textColor="@color/black" />
@@ -31,4 +32,11 @@
         android:layout_marginRight="6dp"
 
         />
+
+    <CheckBox
+        android:id="@+id/cb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/dp_10"
+        android:padding="@dimen/dp_5" />
 </LinearLayout>
