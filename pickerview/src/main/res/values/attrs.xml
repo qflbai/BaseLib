@@ -12,5 +12,6 @@
         <attr name="wheelview_dividerColor" format="color"/>
         <attr name="wheelview_dividerWidth" format="dimension"/>
         <attr name="wheelview_lineSpacingMultiplier" format="float"/>
+        <attr format="reference" name="selectableItemBackground"/>
     </declare-styleable>
 </resources>

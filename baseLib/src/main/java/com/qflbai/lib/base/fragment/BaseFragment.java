@@ -16,6 +16,8 @@ import androidx.fragment.app.FragmentActivity;
 
 
 import com.qflbai.lib.R;
+import com.qflbai.lib.base.activity.BaseActivity;
+import com.qflbai.lib.ui.dialog.LoadingDialog;
 
 import butterknife.ButterKnife;
 import io.reactivex.disposables.CompositeDisposable;
@@ -348,5 +350,30 @@ public abstract class BaseFragment extends Fragment {
         if (this.mCompositeDisposable != null && !mCompositeDisposable.isDisposed()) {
             this.mCompositeDisposable.dispose();
         }
+    }
+
+    /**
+     * 显示弹窗加载
+     */
+    public void showDialogLoading() {
+        BaseActivity activity = (BaseActivity) getActivity();
+        activity.showDialogLoading();
+    }
+
+    public void showDialogLoading(String hint) {
+        BaseActivity activity = (BaseActivity) getActivity();
+        activity.showDialogLoading(hint);
+    }
+
+    /**
+     * 隐藏弹窗加载
+     */
+    public void hideDialogLoading() {
+        BaseActivity activity = (BaseActivity) getActivity();
+        activity.hideDialogLoading();
+    }
+
+    public void finsh(){
+        getActivity().finish();
     }
 }

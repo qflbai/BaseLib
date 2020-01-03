@@ -216,13 +216,27 @@ public class BaseActivity extends LibBaseActivity {
      * 显示弹窗加载
      */
     public void showDialogLoading() {
-        mLoadingDialog = LoadingDialog.newInstance();
-        mLoadingDialog.showLoad(getSupportFragmentManager());
+        try {
+            if (mLoadingDialog == null) {
+                mLoadingDialog = LoadingDialog.newInstance();
+            }
+
+            mLoadingDialog.showLoad(getSupportFragmentManager());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void showDialogLoading(String hint) {
-        mLoadingDialog = LoadingDialog.newInstance();
-        mLoadingDialog.showLoad(getSupportFragmentManager(), hint);
+        try {
+            if (mLoadingDialog == null) {
+                mLoadingDialog = LoadingDialog.newInstance();
+            }
+            mLoadingDialog.showLoad(getSupportFragmentManager(), hint);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**

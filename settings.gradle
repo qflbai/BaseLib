@@ -1,2 +1,2 @@
-include ':app', ':baseLib'
+include ':app', ':baseLib', ':wheelview', ':pickerview'
 rootProject.name='MyApplication'

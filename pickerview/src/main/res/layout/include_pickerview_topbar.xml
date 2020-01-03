@@ -15,6 +15,7 @@
         android:text="@string/pickerview_cancel"
         android:textAllCaps="false"
         android:textColor="@drawable/selector_pickerview_btn"
+        android:foreground="?attr/selectableItemBackground"
         android:textSize="@dimen/pickerview_topbar_btn_textsize" />
 
     <TextView
@@ -35,6 +36,7 @@
         android:layout_alignParentRight="true"
         android:background="@android:color/transparent"
         android:gravity="right|center_vertical"
+        android:foreground="?attr/selectableItemBackground"
         android:paddingRight="@dimen/pickerview_topbar_padding"
         android:text="@string/pickerview_submit"
         android:textAllCaps="false"

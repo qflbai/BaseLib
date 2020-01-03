@@ -7,8 +7,10 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.qflbai.lib.R;
 import com.qflbai.lib.ui.dialog.base.BaseDialogFragment;
@@ -37,10 +39,10 @@ public class LoadingDialog extends BaseDialogFragment {
     private boolean mIsShow = false;
 
     public static LoadingDialog newInstance() {
-        if (mLoadingDialog == null) {
-            mLoadingDialog = new LoadingDialog();
-            //Bundle args = new Bundle();
-        }
+
+        mLoadingDialog = new LoadingDialog();
+        //Bundle args = new Bundle();
+
         return mLoadingDialog;
     }
 
@@ -64,14 +66,46 @@ public class LoadingDialog extends BaseDialogFragment {
      */
     public void showLoad(FragmentManager fragmentManager, String message) {
         mIsShow = true;
-        mLoadingDialog.show(fragmentManager.beginTransaction(), TV_CONTENT);
+        fragmentManager.executePendingTransactions();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        if (!mLoadingDialog.isAdded() && fragmentManager.findFragmentByTag(mLoadingDialog.toString()) == null) {
+
+            fragmentTransaction.add(mLoadingDialog, mLoadingDialog.toString());
+        } else {
+            fragmentTransaction.show(mLoadingDialog);
+        }
+        fragmentTransaction.commitAllowingStateLoss();
+
+
         mMessage = message;
     }
 
     public void showLoad(FragmentManager fragmentManager) {
         mIsShow = true;
         mMessage = "";
-        mLoadingDialog.show(fragmentManager.beginTransaction(), TV_CONTENT);
+        fragmentManager.executePendingTransactions();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        if (!mLoadingDialog.isAdded() && fragmentManager.findFragmentByTag(mLoadingDialog.toString()) == null) {
+            fragmentTransaction.add(mLoadingDialog, mLoadingDialog.toString());
+        } else {
+            fragmentTransaction.show(mLoadingDialog);
+        }
+        fragmentTransaction.commitAllowingStateLoss();
+
+    }
+
+
+    @Override
+    public void show(FragmentManager manager, String tag) {
+        try {
+            //在每个add事务前增加一个remove事务，防止连续的add
+            manager.beginTransaction().remove(this).commit();
+            super.show(manager, tag);
+        } catch (Exception e) {
+            //同一实例使用不同的tag会异常,这里捕获一下
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -80,6 +114,5 @@ public class LoadingDialog extends BaseDialogFragment {
             super.dismiss();
             mIsShow = false;
         }
-
     }
 }
