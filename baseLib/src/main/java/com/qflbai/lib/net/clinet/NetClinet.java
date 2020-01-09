@@ -47,7 +47,7 @@ public class NetClinet {
     /**
      * Cookie
      */
-    private static HashMap<String, List<Cookie>> cookieStore = new HashMap<>();
+    public static HashMap<String, List<Cookie>> cookieStore = new HashMap<>();
     /**
      * 适用于所有带token请求
      *

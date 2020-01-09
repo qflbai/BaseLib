@@ -69,11 +69,14 @@ public class LoadingDialog extends BaseDialogFragment {
         fragmentManager.executePendingTransactions();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-        if (!mLoadingDialog.isAdded() && fragmentManager.findFragmentByTag(mLoadingDialog.toString()) == null) {
+        if (!this.isAdded() && fragmentManager.findFragmentByTag(this.toString()) == null) {
 
-            fragmentTransaction.add(mLoadingDialog, mLoadingDialog.toString());
+            fragmentTransaction.add(this, this.toString());
         } else {
-            fragmentTransaction.show(mLoadingDialog);
+            //在每个add事务前增加一个remove事务，防止连续的add
+            /*fragmentManager.beginTransaction().remove(this).commit();
+            fragmentTransaction.add(this, this.toString());*/
+            fragmentTransaction.show(this);
         }
         fragmentTransaction.commitAllowingStateLoss();
 
@@ -86,10 +89,13 @@ public class LoadingDialog extends BaseDialogFragment {
         mMessage = "";
         fragmentManager.executePendingTransactions();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        if (!mLoadingDialog.isAdded() && fragmentManager.findFragmentByTag(mLoadingDialog.toString()) == null) {
-            fragmentTransaction.add(mLoadingDialog, mLoadingDialog.toString());
+        if (!this.isAdded() && fragmentManager.findFragmentByTag(this.toString()) == null) {
+            fragmentTransaction.add(this, this.toString());
         } else {
-            fragmentTransaction.show(mLoadingDialog);
+            //在每个add事务前增加一个remove事务，防止连续的add
+            // fragmentManager.beginTransaction().remove(this).commit();
+            //fragmentTransaction.add(mLoadingDialog, mLoadingDialog.toString());
+            fragmentTransaction.show(this);
         }
         fragmentTransaction.commitAllowingStateLoss();
 
@@ -100,7 +106,7 @@ public class LoadingDialog extends BaseDialogFragment {
     public void show(FragmentManager manager, String tag) {
         try {
             //在每个add事务前增加一个remove事务，防止连续的add
-            manager.beginTransaction().remove(this).commit();
+            manager.beginTransaction().remove(this).commitAllowingStateLoss();
             super.show(manager, tag);
         } catch (Exception e) {
             //同一实例使用不同的tag会异常,这里捕获一下
@@ -113,6 +119,7 @@ public class LoadingDialog extends BaseDialogFragment {
         if (mIsShow) {
             super.dismiss();
             mIsShow = false;
+
         }
     }
 }

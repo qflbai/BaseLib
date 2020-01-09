@@ -45,6 +45,7 @@ public abstract class BaseFragment extends Fragment {
     private View mLoadingView;
     private View mErrorView;
     private View mEmptyView;
+    private LoadingDialog mLoadingDialog;
 
     @Override
     public void onAttach(Context context) {
@@ -313,7 +314,7 @@ public abstract class BaseFragment extends Fragment {
             mEmptyView.setVisibility(View.VISIBLE);
         }
 
-        if(clickable){
+        if (clickable) {
             mEmptyView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -356,24 +357,39 @@ public abstract class BaseFragment extends Fragment {
      * 显示弹窗加载
      */
     public void showDialogLoading() {
-        BaseActivity activity = (BaseActivity) getActivity();
-        activity.showDialogLoading();
+        try {
+            if (mLoadingDialog == null) {
+                mLoadingDialog = LoadingDialog.newInstance();
+            }
+
+            mLoadingDialog.showLoad(getChildFragmentManager());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void showDialogLoading(String hint) {
-        BaseActivity activity = (BaseActivity) getActivity();
-        activity.showDialogLoading(hint);
+        try {
+            if (mLoadingDialog == null) {
+                mLoadingDialog = LoadingDialog.newInstance();
+            }
+            mLoadingDialog.showLoad(getChildFragmentManager(), hint);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
      * 隐藏弹窗加载
      */
     public void hideDialogLoading() {
-        BaseActivity activity = (BaseActivity) getActivity();
-        activity.hideDialogLoading();
+        if (mLoadingDialog != null) {
+            mLoadingDialog.dismiss();
+        }
     }
 
-    public void finsh(){
+    public void finsh() {
         getActivity().finish();
     }
 }
