@@ -124,6 +124,10 @@ public interface RetrofitService {
     @GET
     Observable<ResponseBody> download(@Url String urlPath);
 
+    @Streaming
+    @GET
+    Observable<ResponseBody> download(@Url String urlPath, @QueryMap Map<String, Object> map);
+
 
     @Streaming
     @GET
@@ -138,7 +142,7 @@ public interface RetrofitService {
 
     @Multipart
     @POST
-    Observable<Response<ResponseBody>> uplodaOnes(@Url String urlPath,  @HeaderMap Map<String, Object> headerMap,@QueryMap Map<String, Object> paramMap, @Part MultipartBody.Part file);
+    Observable<Response<ResponseBody>> uplodaOnes(@Url String urlPath, @HeaderMap Map<String, Object> headerMap, @QueryMap Map<String, Object> paramMap, @Part MultipartBody.Part file);
 
     @Multipart
     @POST

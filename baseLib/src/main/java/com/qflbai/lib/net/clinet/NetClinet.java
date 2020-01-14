@@ -48,6 +48,19 @@ public class NetClinet {
      * Cookie
      */
     public static HashMap<String, List<Cookie>> cookieStore = new HashMap<>();
+    public static CookieJar cookieJar = new CookieJar() {
+        @Override
+        public void saveFromResponse(HttpUrl httpUrl, List<Cookie> list) {
+            cookieStore.put(httpUrl.host(), list);
+        }
+
+        @Override
+        public List<Cookie> loadForRequest(HttpUrl httpUrl) {
+            List<Cookie> cookies = cookieStore.get(httpUrl.host());
+            return cookies != null ? cookies : new ArrayList<Cookie>();
+        }
+    };
+
     /**
      * 适用于所有带token请求
      *
@@ -62,18 +75,7 @@ public class NetClinet {
                 .connectTimeout(CONNECT_TIME_OUT, timeUnit)
                 .readTimeout(READ_TIME_OUT, timeUnit)
                 .writeTimeout(WRITE_TIME_OUT, timeUnit)
-                .cookieJar(new CookieJar() {
-                    @Override
-                    public void saveFromResponse(HttpUrl httpUrl, List<Cookie> list) {
-                        cookieStore.put(httpUrl.host(), list);
-                    }
-
-                    @Override
-                    public List<Cookie> loadForRequest(HttpUrl httpUrl) {
-                        List<Cookie> cookies = cookieStore.get(httpUrl.host());
-                        return cookies != null ? cookies : new ArrayList<Cookie>();
-                    }
-                })
+                .cookieJar(cookieJar)
                 .addNetworkInterceptor(new TokenHeaderInterceptor())
                 .addNetworkInterceptor(logInterceptor)
                 .build();
@@ -95,8 +97,9 @@ public class NetClinet {
                 .connectTimeout(CONNECT_TIME_OUT, timeUnit)
                 .readTimeout(READ_TIME_OUT, timeUnit)
                 .writeTimeout(WRITE_TIME_OUT, timeUnit)
+                .cookieJar(cookieJar)
                 .addInterceptor(new DownloadInterceptor(downloadListener))
-               // .addNetworkInterceptor(logInterceptor)
+                // .addNetworkInterceptor(logInterceptor)
                 .build();
 
     }
