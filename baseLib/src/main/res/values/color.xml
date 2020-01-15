@@ -3,6 +3,8 @@
     <color name="colorPrimary">#ffffff</color>
     <color name="colorPrimaryDark">#E5F4FA</color>
     <color name="colorAccent">#01AFFF</color>
+    <color name="toolbarBg">#01AFFF</color>
+    <color name="toolBarTitle">#ffffff</color>
     <color name="_333333">#333333</color>
     <color name="_666666">#666666</color>
     <color name="white">#ffffff</color>

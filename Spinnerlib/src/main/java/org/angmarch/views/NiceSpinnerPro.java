@@ -1,6 +1,7 @@
 package org.angmarch.views;
 
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -11,28 +12,25 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
-import android.widget.PopupWindow;
-
-
 import android.widget.ListPopupWindow;
 import android.widget.ListView;
-import android.widget.Spinner;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.ColorRes;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.interpolator.view.animation.LinearOutSlowInInterpolator;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -52,7 +50,7 @@ import java.util.List;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public class NiceSpinner extends AppCompatTextView {
+public class NiceSpinnerPro extends RelativeLayout {
 
     private static final int MAX_LEVEL = 10000;
     private static final int VERTICAL_OFFSET = 1;
@@ -85,18 +83,21 @@ public class NiceSpinner extends AppCompatTextView {
 
     @Nullable
     private ObjectAnimator arrowAnimator = null;
+    public EditText editText;
+    public ImageView imageView;
+    private boolean isInput;
 
-    public NiceSpinner(Context context) {
+    public NiceSpinnerPro(Context context) {
         super(context);
         init(context, null);
     }
 
-    public NiceSpinner(Context context, AttributeSet attrs) {
+    public NiceSpinnerPro(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context, attrs);
     }
 
-    public NiceSpinner(Context context, AttributeSet attrs, int defStyleAttr) {
+    public NiceSpinnerPro(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context, attrs);
     }
@@ -140,22 +141,94 @@ public class NiceSpinner extends AppCompatTextView {
     private void init(Context context, AttributeSet attrs) {
         Resources resources = getResources();
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.NiceSpinnerPro);
-        int defaultPadding = resources.getDimensionPixelSize(R.dimen.one_and_a_half_grid_unit);
 
+        editText = new EditText(context);
+        imageView = new ImageView(context);
+
+        editText.setId(Integer.MAX_VALUE - 1000);
+        imageView.setId(Integer.MAX_VALUE - 2000);
+
+        addView(editText);
+        addView(imageView);
+
+        RelativeLayout.LayoutParams imageParams = (LayoutParams) imageView.getLayoutParams();
+        RelativeLayout.LayoutParams editParams = (LayoutParams) editText.getLayoutParams();
+        editParams.width = LayoutParams.MATCH_PARENT;
+
+
+        int arrowGravity = typedArray.getInt(R.styleable.NiceSpinnerPro_arrowGravity, 1);
+        imageParams.addRule(RelativeLayout.CENTER_VERTICAL);
+        editParams.addRule(RelativeLayout.CENTER_VERTICAL);
+        if (arrowGravity == 0) {
+            imageParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+
+            editParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            editParams.addRule(RelativeLayout.RIGHT_OF, imageView.getId());
+
+        } else {
+            imageParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+
+            editParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+            editParams.addRule(RelativeLayout.LEFT_OF, imageView.getId());
+        }
+
+        int imagePadingLefet = typedArray.getDimensionPixelSize(R.styleable.NiceSpinnerPro_imagePadingLeft, 0);
+        int imagePadingRight = typedArray.getDimensionPixelSize(R.styleable.NiceSpinnerPro_imagePadingRight, 0);
+        int imagePadingTop = typedArray.getDimensionPixelSize(R.styleable.NiceSpinnerPro_imagePadingTop, 0);
+        int imagePadingBottom = typedArray.getDimensionPixelSize(R.styleable.NiceSpinnerPro_imagePadingBottom, 0);
+        imageView.setPadding(imagePadingLefet, imagePadingTop, imagePadingRight, imagePadingBottom);
+        imageView.setClickable(true);
+        imageView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (adapter != null) {
+                    if (!popupWindow.isShowing() && adapter.getCount() > 0) {
+                        showDropDown();
+                    } else {
+                        dismissDropDown();
+                    }
+                }
+            }
+        });
+
+        //设置图片
+        arrowDrawableResId = typedArray.getResourceId(R.styleable.NiceSpinnerPro_arrowDrawable, R.drawable.arrow);
+        if (arrowDrawableResId != 0) {
+            imageView.setImageResource(arrowDrawableResId);
+
+        }
+
+        int arrowBgDrawable = typedArray.getResourceId(R.styleable.NiceSpinnerPro_arrowBgDrawable, 0);
+        if (arrowBgDrawable != 0) {
+            imageView.setBackgroundResource(arrowBgDrawable);
+        }
+
+        int defaultPadding = resources.getDimensionPixelSize(R.dimen.one_and_a_half_grid_unit);
         int textPadingLeft =
                 typedArray.getDimensionPixelSize(R.styleable.NiceSpinnerPro_textPadingLeft, defaultPadding);
 
         int textPadingRight =
                 typedArray.getDimensionPixelSize(R.styleable.NiceSpinnerPro_textPadingRight, defaultPadding);
 
-        setGravity(Gravity.CENTER_VERTICAL | Gravity.START);
-        setPadding(textPadingLeft, defaultPadding, textPadingRight,
+
+        editText.setPadding(textPadingLeft, defaultPadding, textPadingRight,
                 defaultPadding);
-        setClickable(true);
-        backgroundSelector = typedArray.getResourceId(R.styleable.NiceSpinnerPro_backgroundSelector, R.drawable.selector);
-        setBackgroundResource(backgroundSelector);
+        editText.setBackgroundColor(Color.TRANSPARENT);
+
+        isInput = typedArray.getBoolean(R.styleable.NiceSpinnerPro_isInput, false);
+        isNoEditView(isInput, editText);
+
         textColor = typedArray.getColor(R.styleable.NiceSpinnerPro_textTint, getDefaultTextColor(context));
         setTextColor(textColor);
+
+        int textSize = typedArray.getDimensionPixelSize(R.styleable.NiceSpinnerPro_textSize, 0);
+        if (textSize != 0) {
+            editText.setTextSize(TypedValue.COMPLEX_UNIT_PX,textSize);
+        }
+
+        String string = typedArray.getString(R.styleable.NiceSpinnerPro_hint);
+        editText.setHint(string);
+
         popupWindow = new ListPopupWindow(context);
         popupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -168,7 +241,7 @@ public class NiceSpinner extends AppCompatTextView {
                 selectedIndex = position;
 
                 if (onSpinnerItemSelectedListener != null) {
-                    onSpinnerItemSelectedListener.onItemSelected(NiceSpinner.this, view, position, id);
+                    onSpinnerItemSelectedListener.onItemSelected(view, position, id);
                 }
 
                 if (onItemClickListener != null) {
@@ -200,11 +273,11 @@ public class NiceSpinner extends AppCompatTextView {
 
         isArrowHidden = typedArray.getBoolean(R.styleable.NiceSpinnerPro_hideArrow, false);
         arrowDrawableTint = typedArray.getColor(R.styleable.NiceSpinnerPro_arrowTint, getResources().getColor(android.R.color.black));
-        arrowDrawableResId = typedArray.getResourceId(R.styleable.NiceSpinnerPro_arrowDrawable, R.drawable.arrow);
+
         dropDownListPaddingBottom =
                 typedArray.getDimensionPixelSize(R.styleable.NiceSpinnerPro_dropDownListPaddingBottom, 0);
         horizontalAlignment = PopUpTextAlignment.fromId(
-                typedArray.getInt(R.styleable.NiceSpinnerPro_popupTextAlignment, PopUpTextAlignment.CENTER.ordinal())
+                typedArray.getInt(R.styleable.NiceSpinnerPro_popupTextAlignment, PopUpTextAlignment.START.ordinal())
         );
 
         CharSequence[] entries = typedArray.getTextArray(R.styleable.NiceSpinnerPro_entries);
@@ -216,6 +289,23 @@ public class NiceSpinner extends AppCompatTextView {
 
         measureDisplayHeight();
 
+    }
+
+    private void isNoEditView(boolean isEdit, EditText view) {
+        if (isEdit) {
+            view.setFocusableInTouchMode(true);
+            view.setFocusable(true);
+            view.requestFocus();
+            view.setClickable(true);
+        } else {
+            view.setFocusable(false);
+            view.setFocusableInTouchMode(false);
+            view.setClickable(false);
+        }
+    }
+
+    private void setTextColor(int color) {
+        editText.setTextColor(color);
     }
 
     private void measureDisplayHeight() {
@@ -251,7 +341,7 @@ public class NiceSpinner extends AppCompatTextView {
     protected void onVisibilityChanged(View changedView, int visibility) {
         super.onVisibilityChanged(changedView, visibility);
         arrowDrawable = initArrowDrawable(arrowDrawableTint);
-        setArrowDrawableOrHide(arrowDrawable);
+
     }
 
     private Drawable initArrowDrawable(int drawableTint) {
@@ -267,13 +357,6 @@ public class NiceSpinner extends AppCompatTextView {
         return drawable;
     }
 
-    private void setArrowDrawableOrHide(Drawable drawable) {
-        if (!isArrowHidden && drawable != null) {
-            setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null);
-        } else {
-            setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-        }
-    }
 
     private int getDefaultTextColor(Context context) {
         TypedValue typedValue = new TypedValue();
@@ -301,12 +384,11 @@ public class NiceSpinner extends AppCompatTextView {
     public void setArrowDrawable(@DrawableRes @ColorRes int drawableId) {
         arrowDrawableResId = drawableId;
         arrowDrawable = initArrowDrawable(R.drawable.arrow);
-        setArrowDrawableOrHide(arrowDrawable);
     }
 
     public void setArrowDrawable(Drawable drawable) {
         arrowDrawable = drawable;
-        setArrowDrawableOrHide(arrowDrawable);
+        imageView.setImageDrawable(drawable);
     }
 
     private void setTextInternal(Object item) {
@@ -317,8 +399,12 @@ public class NiceSpinner extends AppCompatTextView {
         }
     }
 
-    public void setHintText(String hintText){
-        setHint(hintText);
+    public void setText(CharSequence text) {
+        editText.setText(text);
+    }
+
+    public void setHintText(String hintText) {
+        editText.setHint(hintText);
     }
 
     /**
@@ -375,18 +461,21 @@ public class NiceSpinner extends AppCompatTextView {
             // If the adapter needs to be set again, ensure to reset the selected index as well
             selectedIndex = 0;
             popupWindow.setAdapter(adapter);
-            setTextInternal(adapter.getItemInDataset(selectedIndex));
         }
     }
+
+    public boolean isEnabledTouch = false;
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (isEnabled() && event.getAction() == MotionEvent.ACTION_UP) {
-            if (adapter!=null) {
-                if (!popupWindow.isShowing() && adapter.getCount() > 0) {
-                    showDropDown();
-                } else {
-                    dismissDropDown();
+            if (isEnabledTouch) {
+                if (adapter != null) {
+                    if (!popupWindow.isShowing() && adapter.getCount() > 0) {
+                        showDropDown();
+                    } else {
+                        dismissDropDown();
+                    }
                 }
             }
         }
@@ -448,15 +537,6 @@ public class NiceSpinner extends AppCompatTextView {
         }
     }
 
-    public void hideArrow() {
-        isArrowHidden = true;
-        setArrowDrawableOrHide(arrowDrawable);
-    }
-
-    public void showArrow() {
-        isArrowHidden = false;
-        setArrowDrawableOrHide(arrowDrawable);
-    }
 
     public boolean isArrowHidden() {
         return isArrowHidden;

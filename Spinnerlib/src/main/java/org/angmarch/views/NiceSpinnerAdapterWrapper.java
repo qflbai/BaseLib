@@ -21,6 +21,7 @@ import android.widget.ListAdapter;
 public class NiceSpinnerAdapterWrapper extends NiceSpinnerBaseAdapter {
 
     private final ListAdapter baseAdapter;
+    private boolean isAll = true;
 
     NiceSpinnerAdapterWrapper(
             Context context,
@@ -35,11 +36,20 @@ public class NiceSpinnerAdapterWrapper extends NiceSpinnerBaseAdapter {
     }
 
     @Override public int getCount() {
-        return baseAdapter.getCount() - 1;
+        if(isAll) {
+            return baseAdapter.getCount();
+        }else {
+            return baseAdapter.getCount() - 1;
+        }
     }
 
     @Override public Object getItem(int position) {
-        return baseAdapter.getItem(position >= selectedIndex ? position + 1 : position);
+        if(isAll){
+          return   baseAdapter.getItem(position);
+        }else {
+            return baseAdapter.getItem(position >= selectedIndex ? position + 1 : position);
+        }
+
     }
 
     @Override public Object getItemInDataset(int position) {

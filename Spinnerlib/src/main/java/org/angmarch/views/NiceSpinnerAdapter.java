@@ -20,7 +20,7 @@ import java.util.List;
  * limitations under the License.
  */
 public class NiceSpinnerAdapter<T> extends NiceSpinnerBaseAdapter {
-
+    private boolean isAll = true;
     private final List<T> items;
 
     NiceSpinnerAdapter(
@@ -37,15 +37,24 @@ public class NiceSpinnerAdapter<T> extends NiceSpinnerBaseAdapter {
 
     @Override
     public int getCount() {
-        return items.size() - 1;
+        if (isAll) {
+            return items.size();
+        } else {
+            return items.size() - 1;
+        }
     }
 
     @Override
     public T getItem(int position) {
-        if (position >= selectedIndex) {
-            return items.get(position + 1);
-        } else {
+
+        if (isAll) {
             return items.get(position);
+        } else {
+            if (position >= selectedIndex) {
+                return items.get(position + 1);
+            } else {
+                return items.get(position);
+            }
         }
     }
 

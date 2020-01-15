@@ -6,14 +6,61 @@
         <enum name="center" value="2" />
     </attr>
 
-    <declare-styleable name="NiceSpinner">
+<!--    <declare-styleable name="NiceSpinner">
         <attr name="arrowTint" format="color" />
         <attr name="hideArrow" format="boolean" />
         <attr name="arrowDrawable" format="reference|color" />
+        <attr name="arrowBgDrawable" format="reference|color" />
         <attr name="dropDownListPaddingBottom" format="dimension" />
         <attr name="backgroundSelector" format="integer" />
         <attr name="textTint" format="color" />
+        <attr name="textSize" format="dimension"/>
+        <attr name="hint" format="string"/>
+        <attr name="isInput" format="boolean"/>
         <attr name="popupTextAlignment" />
         <attr name="entries" format="reference" />
+
+        <attr name="textPadingLeft" format="dimension" />
+        <attr name="textPadingRight" format="dimension" />
+        <attr name="textPadingBottom" format="dimension" />
+        <attr name="textPadingTop" format="dimension" />
+        <attr name="imagePadingLeft" format="dimension" />
+        <attr name="imagePadingRight" format="dimension" />
+        <attr name="imagePadingBottom" format="dimension" />
+        <attr name="imagePadingTop" format="dimension" />
+
+        <attr name="arrowGravity">
+            <enum name="left" value="0" />
+            <enum name="right" value="1" />
+        </attr>
+    </declare-styleable>-->
+
+    <declare-styleable name="NiceSpinnerPro">
+        <attr name="arrowTint" format="color" />
+        <attr name="hideArrow" format="boolean" />
+        <attr name="arrowDrawable" format="reference|color" />
+        <attr name="arrowBgDrawable" format="reference|color" />
+        <attr name="dropDownListPaddingBottom" format="dimension" />
+        <attr name="backgroundSelector" format="integer" />
+        <attr name="textTint" format="color" />
+        <attr name="textSize" format="dimension"/>
+        <attr name="hint" format="string"/>
+        <attr name="isInput" format="boolean"/>
+        <attr name="popupTextAlignment" />
+        <attr name="entries" format="reference" />
+
+        <attr name="textPadingLeft" format="dimension" />
+        <attr name="textPadingRight" format="dimension" />
+        <attr name="textPadingBottom" format="dimension" />
+        <attr name="textPadingTop" format="dimension" />
+        <attr name="imagePadingLeft" format="dimension" />
+        <attr name="imagePadingRight" format="dimension" />
+        <attr name="imagePadingBottom" format="dimension" />
+        <attr name="imagePadingTop" format="dimension" />
+
+        <attr name="arrowGravity">
+            <enum name="left" value="0" />
+            <enum name="right" value="1" />
+        </attr>
     </declare-styleable>
 </resources>

@@ -140,6 +140,7 @@ dependencies {
 
     // evenbus
     implementation 'org.greenrobot:eventbus:3.1.1'
+    implementation project(path: ':Spinnerlib')
 
 
 }
