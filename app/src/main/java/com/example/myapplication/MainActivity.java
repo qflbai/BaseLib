@@ -1,8 +1,13 @@
 package com.example.myapplication;
 
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -17,10 +22,19 @@ import com.qflbai.lib.net.retrofit.RetrofitService;
 import com.qflbai.lib.net.rxjava.NetObserver;
 import com.qflbai.lib.net.url.NetBaseUrl;
 import com.qflbai.lib.utils.log.LogUtil;
+import com.screenshot.ScreenShotListenManager;
+import com.tbruyelle.rxpermissions2.RxPermissions;
+import com.vinaygaba.rubberstamp.RubberStamp;
+import com.vinaygaba.rubberstamp.RubberStampConfig;
+import com.vinaygaba.rubberstamp.RubberStampPosition;
 
 import org.angmarch.views.NiceSpinner;
 import org.angmarch.views.OnSpinnerItemSelectedListener;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -29,6 +43,7 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -39,6 +54,10 @@ import retrofit2.Response;
 public class MainActivity extends BaseActivity {
     @Inject
     Student student;
+    private ScreenShotListenManager screenShotListenManager;
+    private boolean isHasScreenShotListener = false;
+    @BindView(R.id.iv)
+    ImageView iv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,8 +103,33 @@ public class MainActivity extends BaseActivity {
             }
         });
 
+        screenShotListenManager = ScreenShotListenManager.newInstance(this);
+
+        applyForPermissions();
+    }
+
+    @SuppressLint("CheckResult")
+    private void applyForPermissions() {
+        RxPermissions rxPermissions = new RxPermissions(this);
+        rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
+                .subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(Boolean aBoolean) throws Exception {
+                        if (aBoolean) {
+                            //申请的权限全部允许
+                            initData();
+                        } else {
 
 
+                        }
+                    }
+                });
+    }
+
+    @Override
+    public void initData() {
+        startScreenShotListen();
     }
 
     private void getDepartmentList() {
@@ -119,5 +163,67 @@ public class MainActivity extends BaseActivity {
 
 
     }
+
+    /**
+     * 监听
+     */
+    private void startScreenShotListen() {
+        if (!isHasScreenShotListener && screenShotListenManager != null) {
+            screenShotListenManager.setListener(new ScreenShotListenManager.OnScreenShotListener() {
+                @Override
+                public void onShot(String imagePath) {
+
+                    String path = imagePath;
+                    Bitmap bitmap = BitmapFactory.decodeFile(path);
+
+                    RubberStampConfig config = new RubberStampConfig.RubberStampConfigBuilder()
+                            .base(bitmap)
+                            .rubberStamp("Watermark")
+                            .rubberStampPosition(RubberStampPosition.TILE)
+                            .margin(90, 90)
+                            .alpha(90)
+                            .rotation(45)
+                            .textColor(Color.BLACK)
+                            .textSize(45)
+                            .build();
+
+                    RubberStamp rubberStamp = new RubberStamp(mContext);
+                    Bitmap bitmap1 = rubberStamp.addStamp(config);
+                    iv.setImageBitmap(bitmap1);
+                    StringsaveImageToFile(bitmap1,path);
+                }
+            });
+            screenShotListenManager.startListen();
+            isHasScreenShotListener = true;
+        }
+    }
+
+    public void StringsaveImageToFile(Bitmap bitmap, String filename) {
+        File f = new File(filename);
+        ByteArrayOutputStream bos=null;
+        FileOutputStream fos=null;
+        try {
+            // 此处不要判断文件是否存在,就是要覆盖截屏的图片做法
+            bos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 0, bos);
+            byte[] bitmapdata = bos.toByteArray();
+            fos= new FileOutputStream(f);
+            fos.write(bitmapdata);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }    try {
+            if(fos!=null) {
+                fos.flush();
+                fos.close();
+                bos.close();
+                bos.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
 
 }

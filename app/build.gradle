@@ -141,6 +141,9 @@ dependencies {
     // evenbus
     implementation 'org.greenrobot:eventbus:3.1.1'
     implementation project(path: ':Spinnerlib')
+    implementation project(path: ':stamperlib')
 
 
+    // 权限
+    implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
 }
