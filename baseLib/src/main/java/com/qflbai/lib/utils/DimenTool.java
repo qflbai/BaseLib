@@ -58,7 +58,7 @@ public class DimenTool {
         sb.append("\n");
         sb.append("\n");
         double multiple = swdp / 375.0000;
-        for (double i = -100; i < 600; i = +0.1) {
+        for (int i = -100; i < 600; i ++) {
             double outValue = i * multiple;
             if (i < 0) {
                 sb.append("<dimen name=\"dp_m_" + Math.abs(i) + "\">" + outValue + "dp</dimen>\n");
@@ -81,7 +81,8 @@ public class DimenTool {
         sb2.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
         sb2.append("<resources>");
 
-        File rootFile = new File("./app/src/main/res/values-sw" + swdp + "dp");
+        //File rootFile = new File("./baseLib/src/main/res/values/dimens.xml");
+        File rootFile = new File("./baseLib/src/main/res/values-sw" + swdp + "dp");
         if (!rootFile.exists()) {
             rootFile.mkdirs();
         }
@@ -106,7 +107,8 @@ public class DimenTool {
     }
 
     public static void main(String[] args) {
-        baseDemen();
-       // DimenTool.swDemen(375);
+      //  baseDemen();
+        for(int i=360;i<=560;i+=5)
+        DimenTool.swDemen(i);
     }
 }
