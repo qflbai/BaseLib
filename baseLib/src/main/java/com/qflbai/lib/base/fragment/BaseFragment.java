@@ -46,6 +46,7 @@ public abstract class BaseFragment extends Fragment {
     private View mErrorView;
     private View mEmptyView;
     private LoadingDialog mLoadingDialog;
+    private boolean mViewInflateFinished;
 
     @Override
     public void onAttach(Context context) {
@@ -67,6 +68,7 @@ public abstract class BaseFragment extends Fragment {
 
         ButterKnife.bind(this, rootView);
         initView(state);
+        mViewInflateFinished = true;
         return rootView;
     }
 
@@ -109,7 +111,7 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if (getUserVisibleHint()) {
+        if (isVisibleToUser) {
             mIsVisible = true;
             onVisible();
         } else {

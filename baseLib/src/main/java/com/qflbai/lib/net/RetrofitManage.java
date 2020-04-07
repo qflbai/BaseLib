@@ -123,6 +123,26 @@ public class RetrofitManage {
 
     }
 
+    private Retrofit createDownloadRetrofit(String baseUrl) {
+        return downLoadRetrofit = new Retrofit.Builder()
+                .baseUrl(baseUrl)
+                .client(NetClinet.getDownloadInstance())
+                .addConverterFactory(FastJsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build();
+
+    }
+
+    public RetrofitService createDownloadService(String baseUrl) {
+        return createDownloadRetrofit(baseUrl).create(RetrofitService.class);
+    }
+
+    public RetrofitService createDownloadService() {
+        // 获取服务器地址
+        String baseUrl = NetBaseUrl.getBaseUrl();
+        return createDownloadRetrofit(baseUrl).create(RetrofitService.class);
+    }
+
     /**
      * 获取下载RetrofitService(用于下载)
      *

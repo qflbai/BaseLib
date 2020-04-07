@@ -13,7 +13,8 @@ public class BaseNetApi {
     /**
      * 上下文
      */
-    private static String mToken;
+    private static String mToken="";
+    private static String mJwtRefresh="";
 
     /**
      * 设置token
@@ -28,4 +29,11 @@ public class BaseNetApi {
         return mToken;
     }
 
+    public static void setJwtRefresh(String JwtRefresh){
+        mJwtRefresh=JwtRefresh;
+    }
+
+    public static String getJwtRefresh(){
+        return mJwtRefresh;
+    }
 }

@@ -58,7 +58,7 @@ public class DimenTool {
         sb.append("\n");
         sb.append("\n");
         double multiple = swdp / 375.0000;
-        for (int i = -100; i < 600; i ++) {
+        for (int i = -100; i < 500; i ++) {
             double outValue = i * multiple;
             if (i < 0) {
                 sb.append("<dimen name=\"dp_m_" + Math.abs(i) + "\">" + outValue + "dp</dimen>\n");
@@ -68,7 +68,7 @@ public class DimenTool {
         }
         sb.append("\n");
         sb.append("\n");
-        for (int i = 6; i < 60; i += 1) {
+        for (int i = 6; i < 50; i += 1) {
             double outValue = i * multiple;
             sb.append("<dimen name=\"sp_" + i + "\">" + outValue + "sp</dimen>\n");
         }
@@ -108,7 +108,7 @@ public class DimenTool {
 
     public static void main(String[] args) {
       //  baseDemen();
-        for(int i=360;i<=560;i+=5)
+        for(int i=320;i<=560;i+=5)
         DimenTool.swDemen(i);
     }
 }

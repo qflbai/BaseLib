@@ -58,7 +58,7 @@ public class LogUtil {
     }
 
     private static boolean isDebug() {
-        return LibBuildConfig.isDebug();
+        return true;
     }
 
     /**

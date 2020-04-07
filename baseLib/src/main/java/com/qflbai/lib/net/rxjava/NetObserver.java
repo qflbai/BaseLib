@@ -1,11 +1,14 @@
 package com.qflbai.lib.net.rxjava;
 
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 
 import androidx.lifecycle.MutableLiveData;
 
 import com.qflbai.lib.base.BaseApplication;
 import com.qflbai.lib.base.data.ViewState;
+import com.qflbai.lib.di.component.AppComponent;
 import com.qflbai.lib.net.callback.NetCallback;
 import com.qflbai.lib.utils.toast.ToastUtil;
 
@@ -32,8 +35,8 @@ public class NetObserver extends BaseObserver {
      * 上下文
      */
     private Context mContext;
-    private  MutableLiveData<ViewState> mLiveData;
-    private  ViewState mViewState;
+    private MutableLiveData<ViewState> mLiveData;
+    private ViewState mViewState;
 
     public NetObserver(NetCallback netCallback) {
         mNetCallback = netCallback;
@@ -55,7 +58,7 @@ public class NetObserver extends BaseObserver {
         } else {
             mNetCallback.onSubscribe(d);
             //addNetManage(d);
-            if(mLiveData!=null){
+            if (mLiveData != null) {
                 mViewState.setState(ViewState.State.loading);
                 mLiveData.postValue(mViewState);
             }
@@ -71,7 +74,7 @@ public class NetObserver extends BaseObserver {
             int code = response.code();
             if (code == 200) {
                 try {
-                    if(mLiveData!=null){
+                    if (mLiveData != null) {
                         mViewState.setState(ViewState.State.loadingOk);
                         mLiveData.postValue(mViewState);
                     }
@@ -98,8 +101,8 @@ public class NetObserver extends BaseObserver {
     private void netError(Response<ResponseBody> response) {
         HttpException httpException = new HttpException(response);
         int code = httpException.code();
-        ToastUtil.show(mContext, code + "");
-        if(mLiveData!=null){
+        showError(code);
+        if (mLiveData != null) {
             mViewState.setState(ViewState.State.netError);
             mViewState.setMessage("加载失败");
             mLiveData.postValue(mViewState);
@@ -108,13 +111,48 @@ public class NetObserver extends BaseObserver {
 
     }
 
+    private void showError(int code) {
+        switch (code) {
+            case 201:
+                ToastUtil.show(mContext, "查询失败");
+                break;
+            case 301:
+                ToastUtil.show(mContext, "操作失败");
+                break;
+            case 441:
+                ToastUtil.show(mContext, "登录失败");
+                break;
+            case 444:
+
+                ComponentName componentName = new ComponentName(mContext,"com.yuanxin.hczzpt.home.LoginActivity");
+                Intent intent = new Intent();
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setComponent(componentName);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                mContext.startActivity(intent);
+
+                ToastUtil.show(mContext, "登录失效");
+                break;
+            case 449:
+                ToastUtil.show(mContext, "禁止登陆");
+                break;
+            case 701:
+            case 700:
+                ToastUtil.show(mContext, "禁止操作");
+                break;
+            default:
+                ToastUtil.show(mContext, code + "");
+                break;
+        }
+    }
+
     @Override
     public void onError(Throwable e) {
         mIsNetRequesting = false;
         if (e instanceof SocketTimeoutException) {
             ToastUtil.show(mContext, "网络连接超时");
         }
-        if(mLiveData!=null){
+        if (mLiveData != null) {
             mViewState.setState(ViewState.State.netError);
             mViewState.setMessage("加载失败");
             mLiveData.postValue(mViewState);

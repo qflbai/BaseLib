@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/item_root"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <ImageView
         android:id="@+id/iv_pic"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:adjustViewBounds="true"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:scaleType="centerCrop" />
@@ -21,5 +21,14 @@
         android:layout_alignEnd="@id/iv_pic"
         android:layout_alignRight="@id/iv_pic"
         android:src="@mipmap/ic_image_delete" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_title"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="@dimen/dp_5"
+        android:visibility="gone"
+        android:layout_below="@id/iv_pic"
+        />
 </RelativeLayout>
 

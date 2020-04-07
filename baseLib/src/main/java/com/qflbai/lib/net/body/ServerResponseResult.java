@@ -15,25 +15,33 @@ public class ServerResponseResult {
      * message : 数据查询成功
      */
 
-    private boolean succeed;
-    private int code;
+    private String code;
+    private String message;
+    private String token;
     private Object data;
-    private String msg;
 
-    public boolean isSucceed() {
-        return succeed;
-    }
-
-    public void setSucceed(boolean succeed) {
-        this.succeed = succeed;
-    }
-
-    public int getCode() {
+    public String getCode() {
         return code;
     }
 
-    public void setCode(int code) {
+    public void setCode(String code) {
         this.code = code;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public Object getData() {
@@ -42,13 +50,5 @@ public class ServerResponseResult {
 
     public void setData(Object data) {
         this.data = data;
-    }
-
-    public String getMsg() {
-        return msg;
-    }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
     }
 }

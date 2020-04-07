@@ -104,4 +104,19 @@ public class NetClinet {
 
     }
 
+    public static synchronized OkHttpClient getDownloadInstance( ) {
+
+        HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor(new LogInterceptor());
+        logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        return new OkHttpClient.Builder()
+                .connectTimeout(CONNECT_TIME_OUT, timeUnit)
+                .readTimeout(READ_TIME_OUT, timeUnit)
+                .writeTimeout(WRITE_TIME_OUT, timeUnit)
+                .cookieJar(cookieJar)
+                // .addNetworkInterceptor(logInterceptor)
+                .build();
+
+    }
+
 }

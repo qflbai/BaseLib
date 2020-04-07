@@ -22,9 +22,10 @@ public class TokenHeaderInterceptor implements Interceptor {
         String token = BaseNetApi.getToken();
         Request originalRequest = chain.request();
         // get new request, add request header
-        /*Request updateRequest = originalRequest.newBuilder()
-                .header("Cookie", COKIE_VALUE_PREFIX + token)
-                .build();*/
-        return chain.proceed(originalRequest);
+        Request updateRequest = originalRequest.newBuilder()
+                .header("Jwt-Token", token)
+                .addHeader("Jwt-Refresh", BaseNetApi.getJwtRefresh())
+                .build();
+        return chain.proceed(updateRequest);
     }
 }

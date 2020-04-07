@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -51,6 +52,7 @@ public class ImageBox extends RecyclerView {
     private int lastBoxSize = 0;
 
     private OnImageClickListener mClickListener;
+
 
     public ImageBox(Context context) {
         super(context);
@@ -103,7 +105,14 @@ public class ImageBox extends RecyclerView {
         setLayoutManager(new GridLayoutManager(context, mImageSize));
         setPadding(mLeftMargin, 0, mRightMargin, 0);
         mAdapter = new MyAdapter(context, getBoxWidth(), mDatas, mImageSize, mDefaultPicId, mDeletePicId, mAddPicId, mDeletable, mPadding, mLeftMargin, mRightMargin, mMaxLine, mClickListener, onlineImageLoader);
+
         setAdapter(mAdapter);
+    }
+
+    public void setShowTitle(TitleShow titleShow) {
+        if (mAdapter != null) {
+            mAdapter.setTitleShow(titleShow);
+        }
     }
 
     public void setOnImageClickListener(OnImageClickListener mClickListener) {
@@ -180,6 +189,26 @@ public class ImageBox extends RecyclerView {
                 mAdapter.lastOne = true;
                 this.mDatas.get(this.mDatas.size() - 1).setAdd(false);
                 this.mDatas.get(this.mDatas.size() - 1).setPicUrl(imagePath);
+            }
+        }
+        mAdapter.notifyDataSetChanged();
+    }
+
+    public void addImages(@NonNull List<String> imagePaths) {
+        for (String imagePath : imagePaths) {
+            if (mDatas != null) {
+                if (mDatas.size() < mMaxLine * this.mImageSize) {
+                    mAdapter.lastOne = false;
+                    ImageEntity entity = new ImageEntity();
+                    entity.setPicUrl(imagePath);
+                    entity.setAdd(false);
+                    entity.setOnLine(false);
+                    this.mDatas.add(this.mDatas.size() - 1, entity);
+                } else {
+                    mAdapter.lastOne = true;
+                    this.mDatas.get(this.mDatas.size() - 1).setAdd(false);
+                    this.mDatas.get(this.mDatas.size() - 1).setPicUrl(imagePath);
+                }
             }
         }
         mAdapter.notifyDataSetChanged();
@@ -318,6 +347,7 @@ public class ImageBox extends RecyclerView {
         private boolean lastOne;
         private OnImageClickListener listener;
         private OnlineImageLoader imageLoader;
+        private TitleShow mTitleShow;
 
         MyAdapter(Context context, int boxWidth, List<ImageEntity> mDatas, int imageSize, int defaultPic, int deletePic, int addPic, boolean deletable, int padding, int leftMargin, int rightMargin, int maxLine, OnImageClickListener listener, OnlineImageLoader imageLoader) {
             mInflater = LayoutInflater.from(context);
@@ -445,15 +475,15 @@ public class ImageBox extends RecyclerView {
                 boolean forceOnLine = mDatas.get(holder.getAdapterPosition()).isOnLine();
 
                 if (url != null && url.length() != 0) {
-                    if (url.startsWith("http") || forceOnLine) {
+                   // if (url.startsWith("http") || forceOnLine) {
                         if (imageLoader != null) {
                             imageLoader.onLoadImage(holder.ivPic, url);
                         } else {
                             holder.ivPic.setImageResource(defaultPic == -1 ? R.mipmap.iv_default : defaultPic);
                         }
-                    } else {
-                        holder.ivPic.setImageURI(Uri.fromFile(new File(url)));
-                    }
+                   // } else {
+                      //  holder.ivPic.setImageURI(Uri.fromFile(new File(url)));
+                  //  }
                 } else {
                     holder.ivPic.setImageResource(defaultPic == -1 ? R.mipmap.iv_default : defaultPic);
                 }
@@ -481,13 +511,24 @@ public class ImageBox extends RecyclerView {
                 });
             }
             holder.rootView.setPadding(padding, padding, padding, padding);
+
+            if (mTitleShow != null) {
+                mTitleShow.TitleShow(position, holder.tvTitle);
+            }
+
         }
 
         @Override
         public int getItemCount() {
             return mDatas == null ? 0 : mDatas.size();
         }
+
+        public void setTitleShow(TitleShow titleShow) {
+            mTitleShow = titleShow;
+        }
+
     }
+
 
     public interface OnImageClickListener {
 
@@ -498,17 +539,23 @@ public class ImageBox extends RecyclerView {
         void onAddClick();
     }
 
+    public interface TitleShow {
+        void TitleShow(int position, View v);
+    }
+
     private static class ViewHolder extends RecyclerView.ViewHolder {
 
         private View rootView;
         private ImageView ivPic;
         private ImageView ivDelete;
+        private TextView tvTitle;
 
         ViewHolder(View itemView) {
             super(itemView);
             rootView = itemView;
             ivPic = (ImageView) itemView.findViewById(R.id.iv_pic);
             ivDelete = (ImageView) itemView.findViewById(R.id.iv_delete);
+            tvTitle = itemView.findViewById(R.id.tv_title);
         }
     }
 

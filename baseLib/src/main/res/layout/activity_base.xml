@@ -10,7 +10,9 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_1"
-        android:background="@color/_EAEAEA"></View>
+        android:background="@color/_EAEAEA"
+        android:visibility="gone"
+        ></View>
 
     <RelativeLayout
         android:id="@+id/container"
