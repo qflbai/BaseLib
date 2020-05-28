@@ -22,11 +22,7 @@ import com.qflbai.lib.net.retrofit.RetrofitService;
 import com.qflbai.lib.net.rxjava.NetObserver;
 import com.qflbai.lib.net.url.NetBaseUrl;
 import com.qflbai.lib.utils.log.LogUtil;
-import com.screenshot.ScreenShotListenManager;
 import com.tbruyelle.rxpermissions2.RxPermissions;
-import com.vinaygaba.rubberstamp.RubberStamp;
-import com.vinaygaba.rubberstamp.RubberStampConfig;
-import com.vinaygaba.rubberstamp.RubberStampPosition;
 
 import org.angmarch.views.NiceSpinner;
 import org.angmarch.views.OnSpinnerItemSelectedListener;
@@ -54,7 +50,6 @@ import retrofit2.Response;
 public class MainActivity extends BaseActivity {
     @Inject
     Student student;
-    private ScreenShotListenManager screenShotListenManager;
     private boolean isHasScreenShotListener = false;
     @BindView(R.id.iv)
     ImageView iv;
@@ -103,8 +98,6 @@ public class MainActivity extends BaseActivity {
             }
         });
 
-        screenShotListenManager = ScreenShotListenManager.newInstance(this);
-
         applyForPermissions();
     }
 
@@ -129,7 +122,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        startScreenShotListen();
+        //startScreenShotListen();
     }
 
     private void getDepartmentList() {
@@ -167,7 +160,7 @@ public class MainActivity extends BaseActivity {
     /**
      * 监听
      */
-    private void startScreenShotListen() {
+    /*private void startScreenShotListen() {
         if (!isHasScreenShotListener && screenShotListenManager != null) {
             screenShotListenManager.setListener(new ScreenShotListenManager.OnScreenShotListener() {
                 @Override
@@ -182,8 +175,8 @@ public class MainActivity extends BaseActivity {
                             .rubberStampPosition(RubberStampPosition.TILE)
                             .margin(90, 90)
                             .alpha(90)
-                            .rotation(45)
-                            .textColor(Color.BLACK)
+                            .rotation(0)
+                            .textColor(Color.RED)
                             .textSize(45)
                             .build();
 
@@ -196,7 +189,7 @@ public class MainActivity extends BaseActivity {
             screenShotListenManager.startListen();
             isHasScreenShotListener = true;
         }
-    }
+    }*/
 
     public void StringsaveImageToFile(Bitmap bitmap, String filename) {
         File f = new File(filename);

@@ -23,7 +23,7 @@ public class AppFileUtil {
     /**
      * app根目录
      */
-    public static final String FILE_APP_ROOT = "bsznkq";
+    public static final String FILE_APP_ROOT = "wzhhy";
     /**
      * img目录
      */

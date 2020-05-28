@@ -73,7 +73,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="取消"
-            android:textColor="@color/red"
+            android:textColor="@color/_ff0006"
             android:textSize="16dp"/>
     </LinearLayout>
 </LinearLayout>

@@ -2,10 +2,104 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    >
+    app:elevation="@dimen/dp_1"
+   >
 
-    <include layout="@layout/toolbar_title" />
+    <!--<include layout="@layout/toolbar_title" />-->
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        style="@style/TitleToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@drawable/shape_toolbar_bg"
+        android:minHeight="?attr/actionBarSize"
+        app:contentInsetStart="0dp"
+        app:elevation="@dimen/dp_6">
+
+        <LinearLayout
+            android:id="@+id/ll_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginLeft="@dimen/dp_8"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:elevation="3dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/iv_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/tv_back_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_8"
+                android:textColor="@color/toolBarTitle"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_title"
+            style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:ellipsize="end"
+            android:lines="1"
+            android:textColor="@color/toolBarTitle"
+            android:textSize="@dimen/sp_16"
+            android:textStyle="bold" />
+
+
+        <ImageView
+            android:id="@+id/iv_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginRight="@dimen/dp_8"
+            android:textColor="@color/toolBarTitle"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true" />
+
+        <TextView
+            android:id="@+id/tv_subtitle_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginRight="@dimen/dp_8"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:singleLine="true"
+            android:textColor="@color/_333333"
+            android:textSize="@dimen/sp_14" />
+
+        <ImageView
+            android:id="@+id/iv_subtitle_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginRight="@dimen/dp_8"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true" />
+
+
+        <ImageView
+            android:id="@+id/iv_subtitle__2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginRight="@dimen/dp_8"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true" />
+
+    </androidx.appcompat.widget.Toolbar>
 
     <View
         android:layout_width="match_parent"
@@ -17,7 +111,9 @@
     <RelativeLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:elevation="@dimen/dp_2"
+        >
         <!--加载失败-->
         <ViewStub
             android:id="@+id/vs_error_refresh"

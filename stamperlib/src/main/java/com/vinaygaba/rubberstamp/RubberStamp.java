@@ -22,9 +22,12 @@ import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.Shader;
 import android.graphics.Typeface;
+import android.graphics.Xfermode;
 import android.text.TextUtils;
 import android.util.Pair;
 
@@ -69,9 +72,10 @@ public class RubberStamp {
             addBitmapToBitmap(config.getRubberStampBitmap(), config, canvas,
                     baseBitmapWidth, baseBitmapHeight);
         }
+
         return result;
     }
-  
+
     @Nullable
     private Bitmap getBaseBitmap(@NonNull RubberStampConfig config) {
         Bitmap baseBitmap = config.getBaseBitmap();
@@ -95,6 +99,7 @@ public class RubberStamp {
                                  @NonNull Canvas canvas,
                                  int baseBitmapWidth,
                                  int baseBitmapHeight) {
+        canvas.save();
         Rect bounds = new Rect();
 
         Paint paint = new Paint();
@@ -182,6 +187,7 @@ public class RubberStamp {
                         backgroundPaint);
             }
             canvas.drawText(rubberStampString, positionX , positionY, paint);
+            canvas.restore();
         } else {
             // If the specified RubberStampPosition is TILE, it tiles the rubberstamp across
             // the bitmap. In order to generate a tiled bitamp, it uses a bitmap shader.
@@ -198,6 +204,7 @@ public class RubberStamp {
                     Shader.TileMode.REPEAT));
             Rect bitmapShaderRect = canvas.getClipBounds();
             canvas.drawRect(bitmapShaderRect, paint);
+            canvas.restore();
         }    
     }
 
