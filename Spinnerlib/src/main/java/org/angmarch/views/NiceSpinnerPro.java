@@ -176,32 +176,57 @@ public class NiceSpinnerPro extends RelativeLayout {
         int imagePadingRight = typedArray.getDimensionPixelSize(R.styleable.NiceSpinnerPro_imagePadingRight, 0);
         int imagePadingTop = typedArray.getDimensionPixelSize(R.styleable.NiceSpinnerPro_imagePadingTop, 0);
         int imagePadingBottom = typedArray.getDimensionPixelSize(R.styleable.NiceSpinnerPro_imagePadingBottom, 0);
+
+       boolean imageClickable = typedArray.getBoolean(R.styleable.NiceSpinnerPro_imageClickable, false);
+
         imageView.setPadding(imagePadingLefet, imagePadingTop, imagePadingRight, imagePadingBottom);
-        imageView.setClickable(true);
-        imageView.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (adapter != null) {
-                    if (!popupWindow.isShowing() && adapter.getCount() > 0) {
-                        showDropDown();
-                    } else {
-                        dismissDropDown();
+
+        if(imageClickable) {
+            imageView.setClickable(true);
+            imageView.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (adapter != null) {
+                        if (!popupWindow.isShowing() && adapter.getCount() > 0) {
+                            showDropDown();
+                        } else {
+                            dismissDropDown();
+                        }
                     }
                 }
-            }
-        });
+            });
+        }else {
+            imageView.setClickable(false);
+            this.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (adapter != null) {
+                        if (!popupWindow.isShowing() && adapter.getCount() > 0) {
+                            showDropDown();
+                        } else {
+                            dismissDropDown();
+                        }
+                    }
+                }
+            });
+        }
 
         //设置图片
         arrowDrawableResId = typedArray.getResourceId(R.styleable.NiceSpinnerPro_arrowDrawable, R.drawable.arrow);
         if (arrowDrawableResId != 0) {
             imageView.setImageResource(arrowDrawableResId);
-
         }
+
 
         int arrowBgDrawable = typedArray.getResourceId(R.styleable.NiceSpinnerPro_arrowBgDrawable, 0);
-        if (arrowBgDrawable != 0) {
+
+        if(imageClickable) {
             imageView.setBackgroundResource(arrowBgDrawable);
+
+        }else {
+            this.setBackgroundResource(arrowBgDrawable);
         }
+
 
         int defaultPadding = resources.getDimensionPixelSize(R.dimen.one_and_a_half_grid_unit);
         int textPadingLeft =
@@ -218,16 +243,22 @@ public class NiceSpinnerPro extends RelativeLayout {
         isInput = typedArray.getBoolean(R.styleable.NiceSpinnerPro_isInput, false);
         isNoEditView(isInput, editText);
 
-        textColor = typedArray.getColor(R.styleable.NiceSpinnerPro_textTint, getDefaultTextColor(context));
+        textColor = typedArray.getColor(R.styleable.NiceSpinnerPro_textColor, getDefaultTextColor(context));
         setTextColor(textColor);
+
+        int textHintColor = typedArray.getColor(R.styleable.NiceSpinnerPro_hint, getDefaultTextColor(context));
+        editText.setHintTextColor(textHintColor);
 
         int textSize = typedArray.getDimensionPixelSize(R.styleable.NiceSpinnerPro_textSize, 0);
         if (textSize != 0) {
-            editText.setTextSize(TypedValue.COMPLEX_UNIT_PX,textSize);
+            editText.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
         }
 
         String string = typedArray.getString(R.styleable.NiceSpinnerPro_hint);
         editText.setHint(string);
+
+        String text = typedArray.getString(R.styleable.NiceSpinnerPro_text);
+        editText.setText(text);
 
         popupWindow = new ListPopupWindow(context);
         popupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -299,6 +330,7 @@ public class NiceSpinnerPro extends RelativeLayout {
             view.setClickable(true);
         } else {
             view.setFocusable(false);
+            view.requestFocus();
             view.setFocusableInTouchMode(false);
             view.setClickable(false);
         }

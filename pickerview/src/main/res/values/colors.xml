@@ -10,5 +10,5 @@
     <color name="pickerview_wheelview_textcolor_divider">#d5d5d5</color>
     <color name="pickerview_bgColor_overlay">#60000000</color>
     <color name="pickerview_bgColor_default">#FFFFFFFF</color>
-
+    <color name="pickerview_title_line_default">#f2f2f2</color>
 </resources>

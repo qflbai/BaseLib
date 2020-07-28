@@ -68,6 +68,14 @@ public class OptionsPickerView<T> extends BasePickerView implements View.OnClick
             btnSubmit.setTextSize(mPickerOptions.textSizeSubmitCancel);
             btnCancel.setTextSize(mPickerOptions.textSizeSubmitCancel);
             tvTitle.setTextSize(mPickerOptions.textSizeTitle);
+
+            View vTitleLine = findViewById(R.id.vTitleLine);
+            if (mPickerOptions.isShowTitleLine) {
+                vTitleLine.setVisibility(View.VISIBLE);
+                vTitleLine.setBackgroundColor(mPickerOptions.titleLineColor);
+            } else {
+                vTitleLine.setVisibility(View.GONE);
+            }
         } else {
             mPickerOptions.customListener.customLayout(LayoutInflater.from(context).inflate(mPickerOptions.layoutRes, contentContainer));
         }
@@ -97,6 +105,9 @@ public class OptionsPickerView<T> extends BasePickerView implements View.OnClick
         wheelOptions.setTextColorOut(mPickerOptions.textColorOut);
         wheelOptions.setTextColorCenter(mPickerOptions.textColorCenter);
         wheelOptions.isCenterLabel(mPickerOptions.isCenterLabel);
+        if(mPickerOptions.dividerWidth!=0) {
+            wheelOptions.setDividerWidth(mPickerOptions.dividerWidth);
+        }
     }
 
     /**

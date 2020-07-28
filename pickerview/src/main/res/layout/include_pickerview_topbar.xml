@@ -10,12 +10,12 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:background="@android:color/transparent"
+        android:foreground="?attr/selectableItemBackground"
         android:gravity="left|center_vertical"
         android:paddingLeft="@dimen/pickerview_topbar_padding"
         android:text="@string/pickerview_cancel"
         android:textAllCaps="false"
         android:textColor="@drawable/selector_pickerview_btn"
-        android:foreground="?attr/selectableItemBackground"
         android:textSize="@dimen/pickerview_topbar_btn_textsize" />
 
     <TextView
@@ -35,11 +35,19 @@
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
         android:background="@android:color/transparent"
-        android:gravity="right|center_vertical"
         android:foreground="?attr/selectableItemBackground"
+        android:gravity="right|center_vertical"
         android:paddingRight="@dimen/pickerview_topbar_padding"
         android:text="@string/pickerview_submit"
         android:textAllCaps="false"
         android:textColor="@drawable/selector_pickerview_btn"
         android:textSize="@dimen/pickerview_topbar_btn_textsize" />
+
+    <View
+        android:id="@+id/vTitleLine"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/pickerview_title_linet_height_default"
+        android:layout_alignParentBottom="true"
+        android:background="@color/pickerview_title_line_default"
+        android:visibility="gone" />
 </RelativeLayout>

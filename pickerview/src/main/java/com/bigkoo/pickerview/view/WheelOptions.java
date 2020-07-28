@@ -358,6 +358,13 @@ public class WheelOptions<T> {
         wv_option3.setDividerColor(dividerColor);
     }
 
+    public void setDividerWidth(int dividerWidth){
+        wv_option1.setDividerWidth(dividerWidth);
+        wv_option2.setDividerWidth(dividerWidth);
+        wv_option2.setDividerWidth(dividerWidth);
+    }
+
+
     /**
      * 设置分割线的类型
      *

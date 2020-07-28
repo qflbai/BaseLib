@@ -111,4 +111,9 @@ public class PickerOptions {
     public WheelView.DividerType dividerType = WheelView.DividerType.FILL;//分隔线类型
     public int itemsVisibleCount = 9; //最大可见条目数
     public boolean isAlphaGradient = false; //透明度渐变
+
+    public int titleLineColor = 0xfff2f2f2;//标题栏下划线颜色
+    public boolean isShowTitleLine = false;//是否显示下划线
+    public int dividerWidth = 0;// 分割线粗
+
 }

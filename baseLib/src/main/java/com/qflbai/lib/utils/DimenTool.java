@@ -20,16 +20,29 @@ public class DimenTool {
 
         sb.append("\n");
         sb.append("\n");
-        for (double i = -100; i < 600; i += 0.1) {
+        for (int i = -100; i < 600; i += 0.5) {
             if (i < 0) {
                 sb.append("<dimen name=\"dp_m_" + Math.abs(i) + "\">" + i + "dp</dimen>\n");
             } else {
-                sb.append("<dimen name=\"dp_" + i + "\">" + i + "dp</dimen>\n");
+
+              //  sb.append("<dimen name=\"dp_" + i + "\">" + i + "dp</dimen>\n");
+
+                String ii = "" + i;
+                if (ii.contains(".")) {
+                    String[] split = ii.split(".");
+                    String s = split[0];
+                    String s1 = split[1];
+
+                    sb.append("<dimen name=\"dp_" + s + "_" + s1 + "\">" + i + "dp</dimen>\n");
+                } else {
+                    sb.append("<dimen name=\"dp_" + i + "\">" + i + "dp</dimen>\n");
+                }
+
             }
         }
         sb.append("\n");
         sb.append("\n");
-        for (int i = 6; i < 50; i ++) {
+        for (int i = 6; i < 50; i++) {
             sb.append("<dimen name=\"sp_" + i + "\">" + i + "sp</dimen>\n");
         }
 
@@ -58,12 +71,22 @@ public class DimenTool {
         sb.append("\n");
         sb.append("\n");
         double multiple = swdp / 375.0000;
-        for (int i = -100; i < 500; i ++) {
+        for (int i = -100; i < 500; i += 0.5) {
             double outValue = i * multiple;
             if (i < 0) {
                 sb.append("<dimen name=\"dp_m_" + Math.abs(i) + "\">" + outValue + "dp</dimen>\n");
             } else {
-                sb.append("<dimen name=\"dp_" + i + "\">" + outValue + "dp</dimen>\n");
+                String ii = "" + i;
+                if (ii.contains(".")) {
+                    String[] split = ii.split(".");
+                    String s = split[0];
+                    String s1 = split[1];
+
+                    sb.append("<dimen name=\"dp_" + s + "_" + s1 + "\">" + outValue + "dp</dimen>\n");
+                } else {
+                    sb.append("<dimen name=\"dp_" + i + "\">" + outValue + "dp</dimen>\n");
+                }
+
             }
         }
         sb.append("\n");
@@ -107,8 +130,12 @@ public class DimenTool {
     }
 
     public static void main(String[] args) {
-      //  baseDemen();
-        for(int i=320;i<=560;i+=5)
-        DimenTool.swDemen(i);
+        //  baseDemen();
+      /*  for (int i = 320; i <= 560; i += 5)
+            DimenTool.swDemen(i);*/
+
+      //  DimenTool.swDemen(375);
+
+        DimenTool.baseDemen();
     }
 }
