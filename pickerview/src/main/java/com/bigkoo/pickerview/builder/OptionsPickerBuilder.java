@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.ColorInt;
+import androidx.annotation.ColorRes;
 
 import com.bigkoo.pickerview.configure.PickerOptions;
 import com.bigkoo.pickerview.listener.CustomListener;
@@ -289,4 +290,26 @@ public class OptionsPickerBuilder {
     public <T> OptionsPickerView<T> build() {
         return new OptionsPickerView<>(mPickerOptions);
     }
+
+    public OptionsPickerBuilder isOpen3d(boolean isOpen){
+        mPickerOptions.isOpen3D = isOpen;
+        return this;
+    }
+
+    public OptionsPickerBuilder setTitleLineColor(@ColorRes int color){
+        mPickerOptions.titleLineColor = color;
+        return this;
+    }
+
+    public OptionsPickerBuilder isShowTitleLine(boolean isShow){
+        mPickerOptions.isShowTitleLine = isShow;
+        return this;
+    }
+
+    public OptionsPickerBuilder setDividerWidth(int width){
+        mPickerOptions.dividerWidth = width;
+        return this;
+    }
+
+
 }

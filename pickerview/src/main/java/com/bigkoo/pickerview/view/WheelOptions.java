@@ -347,6 +347,12 @@ public class WheelOptions<T> {
         wv_option3.setLineSpacingMultiplier(lineSpacingMultiplier);
     }
 
+    public void setOpen3D(boolean isOpen){
+        wv_option1.setOpen3D(isOpen);
+        wv_option2.setOpen3D(isOpen);
+        wv_option3.setOpen3D(isOpen);
+    }
+
     /**
      * 设置分割线的颜色
      *

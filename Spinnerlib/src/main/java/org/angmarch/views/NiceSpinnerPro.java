@@ -153,21 +153,21 @@ public class NiceSpinnerPro extends RelativeLayout {
 
         RelativeLayout.LayoutParams imageParams = (LayoutParams) imageView.getLayoutParams();
         RelativeLayout.LayoutParams editParams = (LayoutParams) editText.getLayoutParams();
-        editParams.width = LayoutParams.MATCH_PARENT;
-
+        editParams.width = LayoutParams.WRAP_CONTENT;
+        editParams.height = LayoutParams.WRAP_CONTENT;
+        imageParams.width = LayoutParams.WRAP_CONTENT;
+        imageParams.height =  LayoutParams.WRAP_CONTENT;
 
         int arrowGravity = typedArray.getInt(R.styleable.NiceSpinnerPro_arrowGravity, 1);
         imageParams.addRule(RelativeLayout.CENTER_VERTICAL);
         editParams.addRule(RelativeLayout.CENTER_VERTICAL);
         if (arrowGravity == 0) {
             imageParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-
             editParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
             editParams.addRule(RelativeLayout.RIGHT_OF, imageView.getId());
 
         } else {
             imageParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-
             editParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
             editParams.addRule(RelativeLayout.LEFT_OF, imageView.getId());
         }
@@ -177,11 +177,11 @@ public class NiceSpinnerPro extends RelativeLayout {
         int imagePadingTop = typedArray.getDimensionPixelSize(R.styleable.NiceSpinnerPro_imagePadingTop, 0);
         int imagePadingBottom = typedArray.getDimensionPixelSize(R.styleable.NiceSpinnerPro_imagePadingBottom, 0);
 
-       boolean imageClickable = typedArray.getBoolean(R.styleable.NiceSpinnerPro_imageClickable, false);
+        boolean imageClickable = typedArray.getBoolean(R.styleable.NiceSpinnerPro_imageClickable, false);
 
         imageView.setPadding(imagePadingLefet, imagePadingTop, imagePadingRight, imagePadingBottom);
 
-        if(imageClickable) {
+        if (imageClickable) {
             imageView.setClickable(true);
             imageView.setOnClickListener(new OnClickListener() {
                 @Override
@@ -195,7 +195,7 @@ public class NiceSpinnerPro extends RelativeLayout {
                     }
                 }
             });
-        }else {
+        } else {
             imageView.setClickable(false);
             this.setOnClickListener(new OnClickListener() {
                 @Override
@@ -217,13 +217,11 @@ public class NiceSpinnerPro extends RelativeLayout {
             imageView.setImageResource(arrowDrawableResId);
         }
 
-
         int arrowBgDrawable = typedArray.getResourceId(R.styleable.NiceSpinnerPro_arrowBgDrawable, 0);
 
-        if(imageClickable) {
+        if (imageClickable) {
             imageView.setBackgroundResource(arrowBgDrawable);
-
-        }else {
+        } else {
             this.setBackgroundResource(arrowBgDrawable);
         }
 
@@ -236,8 +234,7 @@ public class NiceSpinnerPro extends RelativeLayout {
                 typedArray.getDimensionPixelSize(R.styleable.NiceSpinnerPro_textPadingRight, defaultPadding);
 
 
-        editText.setPadding(textPadingLeft, defaultPadding, textPadingRight,
-                defaultPadding);
+        editText.setPadding(textPadingLeft, defaultPadding, textPadingRight, defaultPadding);
         editText.setBackgroundColor(Color.TRANSPARENT);
 
         isInput = typedArray.getBoolean(R.styleable.NiceSpinnerPro_isInput, false);

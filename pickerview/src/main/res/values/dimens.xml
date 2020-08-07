@@ -1,15 +1,15 @@
 <resources>
     <!-- 顶部按钮栏高度 -->
-    <dimen name="pickerview_topbar_height">44dp</dimen>
+    <dimen name="pickerview_topbar_height">40dp</dimen>
 
     <!-- 顶部按钮padding -->
-    <dimen name="pickerview_topbar_padding">20dp</dimen>
+    <dimen name="pickerview_topbar_padding">16dp</dimen>
 
     <!-- 顶部按钮文字大小 -->
-    <dimen name="pickerview_topbar_btn_textsize">17sp</dimen>
-    <dimen name="pickerview_topbar_title_textsize">18sp</dimen>
+    <dimen name="pickerview_topbar_btn_textsize">14dp</dimen>
+    <dimen name="pickerview_topbar_title_textsize">16sp</dimen>
     <!-- 选项文字大小 -->
     <dimen name="pickerview_textsize">20sp</dimen>
-    <dimen name="pickerview_title_linet_height_default">1dp</dimen>
-    <dimen name="pickerview_divider_width">1dp</dimen>
+    <dimen name="pickerview_title_linet_height_default">0.5dp</dimen>
+    <dimen name="pickerview_divider_width">0.5dp</dimen>
 </resources>

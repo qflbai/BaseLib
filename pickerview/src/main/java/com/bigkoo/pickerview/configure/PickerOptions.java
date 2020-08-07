@@ -116,4 +116,6 @@ public class PickerOptions {
     public boolean isShowTitleLine = false;//是否显示下划线
     public int dividerWidth = 0;// 分割线粗
 
+    //是否开启3d
+    public boolean isOpen3D = false;
 }
