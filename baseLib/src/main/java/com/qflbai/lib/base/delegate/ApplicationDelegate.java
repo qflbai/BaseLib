@@ -5,7 +5,7 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 
-import com.google.common.base.Preconditions;
+
 import com.qflbai.lib.di.component.AppComponent;
 import com.qflbai.lib.di.component.DaggerAppComponent;
 
@@ -74,7 +74,7 @@ public class ApplicationDelegate implements IAppComponent,ApplicationLifecycle{
      */
     @Override
     public AppComponent getAppComponent() {
-        Preconditions.checkNotNull(mAppComponent,"%s cannot be null",AppComponent.class.getName());
+
         return mAppComponent;
     }
 }

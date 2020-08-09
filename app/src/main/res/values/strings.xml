@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">MyApplication</string>
+    <string-array name="sp">
+        <item>+86</item>
+        <item>+87</item>
+        <item>+66</item>
+    </string-array>
 </resources>

@@ -51,6 +51,8 @@
         <attr name="popupTextAlignment" />
         <attr name="entries" format="reference" />
         <attr name="imageClickable" format="boolean" />
+        <attr name="isWrapContent" format="boolean"/>
+        <attr name="isTextBold" format="boolean"/>
 
         <attr name="textPadingLeft" format="dimension" />
         <attr name="textPadingRight" format="dimension" />

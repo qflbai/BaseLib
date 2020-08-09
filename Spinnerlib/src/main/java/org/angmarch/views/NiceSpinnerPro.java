@@ -10,10 +10,12 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -22,6 +24,7 @@ import android.widget.ListPopupWindow;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.ColorRes;
 import androidx.annotation.DrawableRes;
@@ -83,9 +86,9 @@ public class NiceSpinnerPro extends RelativeLayout {
 
     @Nullable
     private ObjectAnimator arrowAnimator = null;
-    public EditText editText;
+    public TextView editText;
     public ImageView imageView;
-    private boolean isInput;
+
 
     public NiceSpinnerPro(Context context) {
         super(context);
@@ -139,49 +142,70 @@ public class NiceSpinnerPro extends RelativeLayout {
     }
 
     private void init(Context context, AttributeSet attrs) {
-        Resources resources = getResources();
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.NiceSpinnerPro);
-
-        editText = new EditText(context);
+        boolean isInput = typedArray.getBoolean(R.styleable.NiceSpinnerPro_isInput, false);
+        if (isInput) {
+            editText = new EditText(context);
+        } else {
+            editText = new TextView(context);
+        }
         imageView = new ImageView(context);
 
         editText.setId(Integer.MAX_VALUE - 1000);
         imageView.setId(Integer.MAX_VALUE - 2000);
 
-        addView(editText);
-        addView(imageView);
 
-        RelativeLayout.LayoutParams imageParams = (LayoutParams) imageView.getLayoutParams();
-        RelativeLayout.LayoutParams editParams = (LayoutParams) editText.getLayoutParams();
-        editParams.width = LayoutParams.WRAP_CONTENT;
-        editParams.height = LayoutParams.WRAP_CONTENT;
-        imageParams.width = LayoutParams.WRAP_CONTENT;
-        imageParams.height =  LayoutParams.WRAP_CONTENT;
+        boolean isWrapContent = typedArray.getBoolean(R.styleable.NiceSpinnerPro_isWrapContent, false);
+        if (isWrapContent) {
+            RelativeLayout.LayoutParams imageLp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            RelativeLayout.LayoutParams etLp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            etLp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+            etLp.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-        int arrowGravity = typedArray.getInt(R.styleable.NiceSpinnerPro_arrowGravity, 1);
-        imageParams.addRule(RelativeLayout.CENTER_VERTICAL);
-        editParams.addRule(RelativeLayout.CENTER_VERTICAL);
-        if (arrowGravity == 0) {
-            imageParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-            editParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-            editParams.addRule(RelativeLayout.RIGHT_OF, imageView.getId());
-
+            imageLp.addRule(RelativeLayout.RIGHT_OF, editText.getId());
+            imageLp.addRule(RelativeLayout.CENTER_IN_PARENT);
+            addView(editText, etLp);
+            addView(imageView, imageLp);
         } else {
-            imageParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-            editParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-            editParams.addRule(RelativeLayout.LEFT_OF, imageView.getId());
+
+            RelativeLayout.LayoutParams imageLp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            RelativeLayout.LayoutParams etLp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
+            int arrowGravity = typedArray.getInt(R.styleable.NiceSpinnerPro_arrowGravity, 1);
+            if (arrowGravity == 0) {
+                imageLp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+                etLp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+                etLp.addRule(RelativeLayout.RIGHT_OF, imageView.getId());
+
+            } else {
+                imageLp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+                etLp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+                etLp.addRule(RelativeLayout.LEFT_OF, imageView.getId());
+            }
+
+            addView(editText, etLp);
+            addView(imageView, imageLp);
+        }
+
+
+        boolean isTextBold = typedArray.getBoolean(R.styleable.NiceSpinnerPro_isTextBold, false);
+        if (isTextBold) {
+            TextPaint paint = editText.getPaint();
+            paint.setFakeBoldText(true);
         }
 
         int imagePadingLefet = typedArray.getDimensionPixelSize(R.styleable.NiceSpinnerPro_imagePadingLeft, 0);
         int imagePadingRight = typedArray.getDimensionPixelSize(R.styleable.NiceSpinnerPro_imagePadingRight, 0);
         int imagePadingTop = typedArray.getDimensionPixelSize(R.styleable.NiceSpinnerPro_imagePadingTop, 0);
         int imagePadingBottom = typedArray.getDimensionPixelSize(R.styleable.NiceSpinnerPro_imagePadingBottom, 0);
-
-        boolean imageClickable = typedArray.getBoolean(R.styleable.NiceSpinnerPro_imageClickable, false);
-
         imageView.setPadding(imagePadingLefet, imagePadingTop, imagePadingRight, imagePadingBottom);
 
+        boolean imageClickable = typedArray.getBoolean(R.styleable.NiceSpinnerPro_imageClickable, false);
+        int arrowBgDrawable = typedArray.getResourceId(R.styleable.NiceSpinnerPro_arrowBgDrawable, 0);
+
+
         if (imageClickable) {
+            imageView.setBackgroundResource(arrowBgDrawable);
             imageView.setClickable(true);
             imageView.setOnClickListener(new OnClickListener() {
                 @Override
@@ -196,7 +220,9 @@ public class NiceSpinnerPro extends RelativeLayout {
                 }
             });
         } else {
+            this.setBackgroundResource(arrowBgDrawable);
             imageView.setClickable(false);
+            this.setClickable(true);
             this.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -217,29 +243,20 @@ public class NiceSpinnerPro extends RelativeLayout {
             imageView.setImageResource(arrowDrawableResId);
         }
 
-        int arrowBgDrawable = typedArray.getResourceId(R.styleable.NiceSpinnerPro_arrowBgDrawable, 0);
 
-        if (imageClickable) {
-            imageView.setBackgroundResource(arrowBgDrawable);
-        } else {
-            this.setBackgroundResource(arrowBgDrawable);
-        }
-
-
-        int defaultPadding = resources.getDimensionPixelSize(R.dimen.one_and_a_half_grid_unit);
+        //int defaultPadding = resources.getDimensionPixelSize(R.dimen.one_and_a_half_grid_unit);
+        int defaultPadding = 0;
         int textPadingLeft =
                 typedArray.getDimensionPixelSize(R.styleable.NiceSpinnerPro_textPadingLeft, defaultPadding);
-
         int textPadingRight =
                 typedArray.getDimensionPixelSize(R.styleable.NiceSpinnerPro_textPadingRight, defaultPadding);
-
-
-        editText.setPadding(textPadingLeft, defaultPadding, textPadingRight, defaultPadding);
+        int textPadingTop = typedArray.getDimensionPixelSize(R.styleable.NiceSpinnerPro_textPadingTop, defaultPadding);
+        int textPadingBottom = typedArray.getDimensionPixelSize(R.styleable.NiceSpinnerPro_textPadingBottom, defaultPadding);
+        editText.setPadding(textPadingLeft, textPadingTop, textPadingRight, textPadingBottom);
         editText.setBackgroundColor(Color.TRANSPARENT);
 
-        isInput = typedArray.getBoolean(R.styleable.NiceSpinnerPro_isInput, false);
-        isNoEditView(isInput, editText);
 
+        //isNoEditView(isInput, editText);
         textColor = typedArray.getColor(R.styleable.NiceSpinnerPro_textColor, getDefaultTextColor(context));
         setTextColor(textColor);
 
@@ -326,10 +343,12 @@ public class NiceSpinnerPro extends RelativeLayout {
             view.requestFocus();
             view.setClickable(true);
         } else {
-            view.setFocusable(false);
-            view.requestFocus();
             view.setFocusableInTouchMode(false);
             view.setClickable(false);
+            view.setFocusable(false);
+            view.setEnabled(false);
+            view.clearFocus();
+            view.setCursorVisible(false);
         }
     }
 
