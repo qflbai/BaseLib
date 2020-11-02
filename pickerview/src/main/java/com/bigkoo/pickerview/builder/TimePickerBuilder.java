@@ -30,6 +30,11 @@ public class TimePickerBuilder {
         mPickerOptions.timeSelectListener = listener;
     }
 
+    public TimePickerBuilder isOpen3D(boolean isOpen) {
+        mPickerOptions.isOpen3D = isOpen;
+        return this;
+    }
+
     //Option
     public TimePickerBuilder setGravity(int gravity) {
         mPickerOptions.textGravity = gravity;

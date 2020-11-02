@@ -897,4 +897,13 @@ public class WheelTime {
         wv_minutes.setAlphaGradient(isAlphaGradient);
         wv_seconds.setAlphaGradient(isAlphaGradient);
     }
+
+    public void IsOpen3D(boolean isOpen) {
+        wv_day.setOpen3D(isOpen);
+        wv_month.setOpen3D(isOpen);
+        wv_year.setOpen3D(isOpen);
+        wv_hours.setOpen3D(isOpen);
+        wv_minutes.setOpen3D(isOpen);
+        wv_seconds.setOpen3D(isOpen);
+    }
 }
